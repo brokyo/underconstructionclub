@@ -28,7 +28,7 @@
     <hr>
     <div class="projectContainer">
       <div class="projectCopy">
-        <h2><a href="https://geocitiesspelunkers.firebaseapp.com">Unnamed GeoCities spelunker/memorial thing</a></h2>
+        <h2><a href="http://geocitiesspelunkers.surge.sh/">Unnamed GeoCities spelunker/memorial thing</a></h2>
         <h4>What is it:</h4>
         <p>Memorial of the most interesting writing, music, and design on geocities.</p>
         <h4>How far along</h4>
@@ -37,7 +37,7 @@
         <p>Wanted to get this out of my system so built one evening. Don't know what if anything is next. If you use it and want something or like it let me know.</p>
       </div>
       <div class="projectImage">
-        <a href="https://geocitiesspelunkers.firebaseapp.com">
+        <a href="http://geocitiesspelunkers.surge.sh/">
           <img src="/images/su.png"></img>
         </a>
       </div>
@@ -50,6 +50,9 @@ import { db } from '../plugins/firebase.js'
 import '../plugins/vue-easy-toast.js'
 
 export default {
+  metaInfo: {
+    title: 'Welcome To The Under Construction Club'
+  },
   data () {
     return {
       email: ''

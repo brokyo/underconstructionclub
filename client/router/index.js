@@ -1,8 +1,14 @@
 import Vue from 'vue'
+
 import Router from 'vue-router'
+Vue.use(Router)
+
+import Meta from 'vue-meta'
+Vue.use(Meta)
+
+
 import Home from '../views/Home'
 
-Vue.use(Router)
 
 export default new Router({
   mode: 'history',
