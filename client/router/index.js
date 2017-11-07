@@ -8,6 +8,7 @@ Vue.use(Meta)
 
 
 import Home from '../views/Home'
+import Drones from '../views/Drones'
 
 
 export default new Router({
@@ -16,6 +17,10 @@ export default new Router({
     {
       path: '/',
       component: Home
+    },
+    {
+      path: '/drones',
+      component: Drones
     }
   ]
 })

@@ -2,8 +2,11 @@
   <main>
     <pre>Want to collaborate? Github projects <a href="https://github.com/brokyo">are here</a> or just <a href="mailto:alexcarusillo@gmail.com">email me</a> no tech skills required</pre>
     <h2>Log</h2>
-    <pre>10-31-17</pre>
-    <p>You're early.</p>
+    <pre>11-03-17</pre>
+    <p>Been sharing this with like zero context. Sorry.</p>
+    <p>This is just a public notebook of stuff I'm working on. Don't expect anything to be "user friendly" or "designed literally at all." Eventually I would like to make this available to others so they can do the same but dunno. Need to see what this is first.</p>
+    <p>Actively working on making Our Little Planet music boxes and searching through geocities. You can do it with me or just check in.</p>
+    <p>Sign up for the update letter, if you want.</p>
     <label>Enter email for updates</label>
     <input type="text" v-model="email"></input>
     <button @click="submit" :disabled="!email">Join</button>
@@ -16,8 +19,7 @@
         <h4>How far along:</h4>
         <p>You can design a synth, create visuals, and "save" them as five minute instrument/song hybrid things. It's like windchimes. I've made windchines.</p>
         <h4>Next feature:</h4>
-        <p>Ability to edit music boxes you've already created</p>
-        <h3>New musicboxes</h3>
+        <p>Multiple synths and effects on them</p>
       </div>
       <div class="projectImage">
         <a href="https://ourlittleplanet.herokuapp.com">
@@ -30,11 +32,12 @@
       <div class="projectCopy">
         <h2><a href="http://geocitiesspelunkers.surge.sh/">Unnamed GeoCities spelunker/memorial thing</a></h2>
         <h4>What is it:</h4>
-        <p>Memorial of the most interesting writing, music, and design on geocities.</p>
-        <h4>How far along</h4>
-        <p>Shows random page and lets you memorialize it if you think it deserves it</p>
-        <h4>Next Feature</h4>
-        <p>Wanted to get this out of my system so built one evening. Don't know what if anything is next. If you use it and want something or like it let me know.</p>
+        <p>Go to a random archived geocities page and - if it's cool - memorialize it so other people can see it.</p>
+        <h4>How far along:</h4>
+        <p>It exists and all the buttons work and stuff</p>
+        <h4>Next feature</h4>
+        <p>This is just a little hack - don't know what if anything is next. If you use it and want something or like it let me know.</p>
+        <p>Also want to save the MIDIs if they're cool and make them available somewhere.</p>
       </div>
       <div class="projectImage">
         <a href="http://geocitiesspelunkers.surge.sh/">
@@ -64,8 +67,9 @@ export default {
   methods: {
     submit () {
         this.$firebaseRefs.newsletter.push({email: this.email})
-        this.$toast('Saved', {horizontalPosition: 'right', duration: 3000, closeable: true})
+        // this.$toast('Saved', {horizontalPosition: 'right', duration: 3000, closeable: true})
         this.email = ''
+        alert('youre signed up')
     }
   }
 }
