@@ -9,7 +9,7 @@ Vue.use(Meta)
 
 import Home from '../views/Home'
 import Drones from '../views/Drones'
-
+import Signup from '../views/SignUp'
 
 export default new Router({
   mode: 'history',
@@ -21,6 +21,10 @@ export default new Router({
     {
       path: '/drones',
       component: Drones
+    },
+    {
+      path: '/signup',
+      component: Signup
     }
   ]
 })

@@ -7,13 +7,17 @@
     <p>This is just a public notebook of stuff I'm working on. Don't expect anything to be "user friendly" or "designed literally at all." Eventually I would like to make this available to others so they can do the same but dunno. Need to see what this is first.</p>
     <p>Actively working on making Our Little Planet music boxes and searching through geocities. You can do it with me or just check in.</p>
     <p>Sign up for the update letter, if you want.</p>
-    <label>Enter email for updates</label>
-    <input type="text" v-model="email"></input>
-    <button @click="submit" :disabled="!email">Join</button>
+    <div class="emailSignupContainer">
+      <div class="signupForm">
+        <label>Enter email for updates</label>
+        <input type="text" v-model="email"></input>
+        <button @click="submit" :disabled="!email">Join</button>
+      </div>
+    </div>
     <hr>
     <div class="projectContainer">
       <div class="projectCopy">
-        <h2><a href="https://ourlittleplanet.herokuapp.com">Our Little Planet</a></h2>
+        <h2><a href="http://ourlittleplanet.club/">Our Little Planet</a></h2>
         <h4>What is it:</h4>
         <p>A tool for creating generative music boxes.</p>
         <h4>How far along:</h4>
@@ -22,7 +26,7 @@
         <p>Multiple synths and effects on them</p>
       </div>
       <div class="projectImage">
-        <a href="https://ourlittleplanet.herokuapp.com">
+        <a href="http://ourlittleplanet.club">
           <img src="/images/olp.png"></img>
         </a>
       </div>
@@ -75,7 +79,18 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.emailSignupContainer {
+  display: flex;
+  justify-content: center;
+
+  .signupForm {
+    border: 5px double black;
+    padding: 10px;
+    width: 400px;
+  }
+}
+
 label {
   font-weight: 900;
 }
