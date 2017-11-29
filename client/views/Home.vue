@@ -2,16 +2,32 @@
   <main>
     <pre>Want to collaborate? Github projects <a href="https://github.com/brokyo">are here</a> or just <a href="mailto:alexcarusillo@gmail.com">email me</a> no tech skills required</pre>
     <h2>Log</h2>
-    <pre>11-03-17</pre>
-    <p>Been sharing this with like zero context. Sorry.</p>
-    <p>This is just a public notebook of stuff I'm working on. Don't expect anything to be "user friendly" or "designed literally at all." Eventually I would like to make this available to others so they can do the same but dunno. Need to see what this is first.</p>
-    <p>Actively working on making Our Little Planet music boxes and searching through geocities. You can do it with me or just check in.</p>
+    <pre>11-29-17</pre>
+    <p>Spent yesterday making a weird drone painting thing. It's great. Try opening it in the corner of your screen while you do other work.</p>
+    <p>Thinking about making it an app but the art will need to be more considered - let me know if you've got thoughts.</p>
     <p>Sign up for the update letter, if you want.</p>
     <div class="emailSignupContainer">
       <div class="signupForm">
         <label>Enter email for updates</label>
         <input type="text" v-model="email"></input>
         <button @click="submit" :disabled="!email">Join</button>
+      </div>
+    </div>
+    <hr>
+    <div class="projectContainer">
+      <div class="projectCopy">
+        <h2><a href="/windows">Windows</a></h2>
+        <h4>What is it:</h4>
+        <p>Randomly generated drones and painting. Click and drag to change color and shapes. Opening several windows at a time is fun too. Works on mobile supposedly.</p>
+        <h4>How far along:</h4>
+        <p>Quick prototype for something else but might end up making this an ionic app so it can be properly used on phones/appletv/<a href="https://frm.fm">framed.</a></p>
+        <h4>Next feature:</h4>
+        <p>Improving the control system and painting evolution</p>
+      </div>
+      <div class="projectImage">
+        <a href="/windows">
+          <img src="/images/windows.png"></img>
+        </a>
       </div>
     </div>
     <hr>
@@ -80,6 +96,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+main {
+  margin: 8px
+}
 .emailSignupContainer {
   display: flex;
   justify-content: center;

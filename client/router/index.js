@@ -8,8 +8,8 @@ Vue.use(Meta)
 
 
 import Home from '../views/Home'
-import Drones from '../views/Drones'
 import Signup from '../views/SignUp'
+import Windows from '../views/Windows'
 
 export default new Router({
   mode: 'history',
@@ -19,12 +19,12 @@ export default new Router({
       component: Home
     },
     {
-      path: '/drones',
-      component: Drones
-    },
-    {
       path: '/signup',
       component: Signup
+    },
+    {
+      path: '/windows',
+      component: Windows
     }
   ]
 })
