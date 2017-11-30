@@ -4,7 +4,7 @@
       <label>Base: {{baseFrequency}}</label> <label>Oscillators: {{oscillators}}</label>
       <button @click="fullScreen">full screen</button>
     </div>
-    <h4 v-if="isMobile && !start">iOS click center of screen to start</h4>
+    <h1 v-if="isMobile && !start">iOS click center of screen to start</h1>
      <div id="canvasContainer">
       <canvas id="pixels"></canvas>
     </div>
@@ -14,6 +14,7 @@
 <script>
 var Tone = require('tone')
 var _ = require('underscore')
+var StartAudioContext = require('startaudiocontext')
 // EUGH I did not name this and it's literally the only thing that does what I need :/
 var nipplejs = require('nipplejs')
 export default {
@@ -27,7 +28,7 @@ export default {
           rw: 100,
           rh: 10,
           percent: 0.0001  ,
-          interval: 500,
+          interval: 250,
         },
         startLoc: {
           x: 0,
@@ -95,13 +96,13 @@ export default {
 
 
         window.setInterval(()=>{
-          let h = vue.canvasConfig.h + Math.random()*5
-          let s = vue.canvasConfig.s + Math.random()*5
-          let cw = vue.canvasConfig.rw * _.random(1, 1.1)
-          let ch = vue.canvasConfig.rh * _.random(1, 1.1)
 
-          for (var i = 0; i < pixels * vue.canvasConfig.percent; i++) {
-          // for (var i = 0; i < 2; i++) {
+          // for (var i = 0; i < pixels * vue.canvasConfig.percent; i++) {
+          for (var i = 0; i < _.random(10, 70); i++) {
+              let h = vue.canvasConfig.h + Math.random()*3
+              let s = vue.canvasConfig.s + Math.random()*3
+              let cw = vue.canvasConfig.rw * _.random(1, 1.1)
+              let ch = vue.canvasConfig.rh * _.random(1, 1.1)
               ctx.fillStyle = 'hsl('+ h +','+ s +'%,'+vue.canvasConfig.l+'%)';
               ctx.fillRect(_.random(-40, 600), _.random(-40, 600), cw, ch);
             }
