@@ -10,7 +10,7 @@ Vue.use(Meta)
 import Home from '../views/Home'
 import Signup from '../views/SignUp'
 import Windows from '../views/Windows'
-import Fade from '../views/Fade'
+import Pools from '../views/Pools'
 
 export default new Router({
   mode: 'history',
@@ -28,8 +28,8 @@ export default new Router({
       component: Windows
     },
     {
-      path: '/fade',
-      component: Fade
+      path: '/pools',
+      component: Pools
     }
   ]
 })

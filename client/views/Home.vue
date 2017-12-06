@@ -68,7 +68,7 @@
     <hr>
     <div class="projectContainer">
       <div class="projectCopy">
-        <h2><a href="/fade">[WIP]</a></h2>
+        <h2><a href="/pools">[WIP]</a></h2>
         <h4>What is it:</h4>
         <p>Work in progress of a physical looping device I'm making. Putting this up so I can get to it. Using it will make very little sense initially. Press the notes on a phone to get a generally idea of where this is going.</p>
         <h4>How far along:</h4>
@@ -77,7 +77,7 @@
         <p>Store and play mulitple loops, mutate those loops</p>
       </div>
       <div class="projectImage">
-        <a href="/fade">
+        <a href="/pools">
           <img src="/images/fade.png"></img>
         </a>
       </div>
