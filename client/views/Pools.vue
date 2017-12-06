@@ -1,51 +1,111 @@
 <template>
 	<main>
-		<button @click="mobileStart" v-if="!started"></button>
-		<div>
-			<button @click="state = 'compose'">Compose</button>
-			<button @click="state = 'config'">Config</button>
-		</div>
+		<button id="mobileStart" @click="mobileStart" v-if="!started">iOS Start</button>
 		<div v-if="started">
-			<compose v-if="state === 'compose'"></compose>
-			<config v-if="state === 'config'"></config>
+			<div>
+				<button @click="state = 'compose'">Compose</button>
+				<button @click="state = 'config'">Config</button>
+				<button @click="state = 'play'">Play</button>
+			</div>
+			<compose v-if="state === 'compose'" v-on:saveLoop="saveLoop"></compose>
+			<config v-if="state === 'config'" :loops="loops"></config>
+			<play v-if="state === 'play'" :loops="loops"></play>
 		</div>
 	</main>
 </template>
 
 <script>
+var Tone = require('tone')
+var _ = require('lodash')
+var StartAudioContext = require('startaudiocontext')
+
 import compose from '../components/pools/compose.vue'
 import config from '../components/pools/config.vue'
-
-function isMobileDevice() {
-  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-};
-var isMobile = isMobileDevice()
-var StartAudioContext = require('startaudiocontext')
+import play from '../components/pools/play.vue'
 
 export default {
   components: {
-  	compose, config
+  	compose, config, play
   },
   data () {
     return {
     	started: false,
     	state: 'home',
+    	loops: [],
+    	line0: {
+    		synth: {},
+    		panner: {},
+    		echo: {},
+    		delay: {},
+    		loop: {}			  				
+    	},
+    	line1: {
+    		synth: {},
+    		panner: {},
+    		echo: {},
+    		delay: {},
+    		loop: {}			  				
+    	}
     }
+  },
+  computed: {
+  	isMobile () {
+  		return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  	}
   },
   methods: {
   	mobileStart () {
   		StartAudioContext(Tone.context).then(() => {
   			this.started = true
+  			this.constructTone()
   		})
+  	},
+  	constructTone () {
+	  	// Line 0
+	  	this.line0.synth = new Tone.PolySynth(7, Tone.AMSynth)
+	  	this.line0.panner = new Tone.Panner(-0.5)
+	    this.line0.echo = new Tone.FeedbackDelay('16n', 0.4)
+	  	this.line0.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
+	  	this.line0.loop = new Tone.Gain(0.5)
+
+	  	this.line0.synth.connect(this.line0.panner)
+	  	this.line0.panner.connect(this.line0.echo)
+	  	this.line0.echo.fan(Tone.Master, this.line0.delay)
+	  	this.line0.delay.fan(Tone.Master, this.line0.loop)
+	  	this.line0.loop.connect(this.line0.delay)
+
+
+	  	// Line 1
+	  	this.line1.synth = new Tone.PolySynth(7, Tone.AMSynth)
+	  	this.line1.panner = new Tone.Panner(0.5)
+	    this.line1.echo = new Tone.FeedbackDelay('16n', 0.4)
+	  	this.line1.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
+	  	this.line1.loop = new Tone.Gain(0.5)
+
+	  	this.line1.synth.connect(this.line1.panner)
+	  	this.line1.panner.connect(this.line1.echo)
+	  	this.line1.echo.fan(Tone.Master, this.line1.delay)
+	  	this.line1.delay.fan(Tone.Master, this.line1.loop)
+	  	this.line1.loop.connect(this.line1.delay)
+  	},
+  	saveLoop (exportedLoop) {
+  		this.loops[exportedLoop.index] = exportedLoop
   	}
   },
   mounted () {
-  	if(!isMobile) {
+  	if(this.isMobile){
+  		this.started = false
+  	} else {
   		this.started = true
+  		this.constructTone()  		
   	}
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	#mobileStart {
+		width: 100%;
+		font-size: 32px;
+	}
 </style>

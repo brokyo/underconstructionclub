@@ -1,14 +1,7 @@
 <template>
 	<main>
-		<button @click="playLoops">Play</button>
-      <div v-for="(loop, index) in loops">
-        <h3>Loop {{index}} - {{Math.round(loop.length * 100) / 100}} Seconds</h3>
-        <label>Start</label>
-        <input v-model="loop.start"></input>
-        <label>Loop Hold</label>
-        <input v-model="loop.interval"></input>
-        <pre v-for="event in loop.events">{{event.note}} Start: {{event.start}} Duration: {{event.duration}}</pre>
-      </div>
+		<button v-if="!playing" @click="playLoops">Play</button>
+		<img :src="embed"></img>
 	</main>
 </template>
 
@@ -16,12 +9,18 @@
 var Tone = require('tone')
 
 export default {
-  name: 'config',
+  name: 'play',
   props: ['loops'],
   data () {
     return {
-
+    	cacheBreak: 0,
+    	playing: false
     }
+  },
+  computed: {
+  	embed () {
+  		return 'http://207.251.86.238/cctv391.jpg?cache='+this.cacheBreak
+  	}
   },
   methods: {
   	playLoops () {
@@ -43,14 +42,28 @@ export default {
 
 	  	Tone.Transport.start()
   		vue.playing = true
-  	},
-  	stopLoops () {
-  		Tone.Transport.stop()
-  		this.playing = false
   	}
+  },
+  mounted () {
+  	setInterval(() => {
+	  	this.cacheBreak = Math.random()
+  	}, 1000)
+  },
+  beforeDestroy () {
+	Tone.Transport.stop()
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+	button {
+		position: absolute;
+		height: 100vh;
+		width: 100vw;
+	}
+
+	img {
+		height: 100vh;
+		width: 100vw;
+	}
 </style>
