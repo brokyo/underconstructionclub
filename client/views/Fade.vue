@@ -1,16 +1,17 @@
 <template>
 	<main>
 		<div id="triggers">
-			<div v-for="trigger in triggers" class="synthTrigger" :class="{active: trigger.active}" @mousedown="attack(trigger.note); trigger.active = true" @mouseup="release(trigger.note); trigger.active = false">
-				<p>{{trigger.note}}</p>
-			</div>
+			<button v-for="trigger in triggers" class="synthTrigger" :class="{active: trigger.active}" @mousedown="attack(trigger.note); trigger.active = true" @mouseup="release(trigger.note); trigger.active = false" v-on:touchstart="attack(trigger.note); trigger.active = true" v-on:touchend="release(trigger.note); trigger.active = false">
+				{{trigger.note}}
+			</button>
 		</div>
-<!-- 		<div id="controls">
-			<button @click="startRecording" v-if="!recording">Start</button>
-			<button @click="endRecording" v-else>End</button>
-			<button @click="clearLoops">Clear</button>
-			<button @click="playLoops" v-if="loops.length > 0">Play</button>
-		</div> -->
+		<div id="controls">
+			<button @click="startRecording" v-if="!recording" :disabled="loops.length === 2" class="recordingButton" id="startButton">Record</button>
+			<button @click="endRecording" v-else class="recordingButton" id="endButton">End</button>
+			<button @click="clearLoops" :disabled="loops.length === 0">Clear</button>
+			<button @click="playLoops" v-if="playing === false">Play</button>
+			<button @click="stopLoops" v-else>Stop</button>
+		</div>
 	</main>
 </template>
 
@@ -23,18 +24,19 @@ export default {
   data () {
   	return {
   		recording: false,
+  		playing: false,
   		loopPause: 5,
   		triggers: [
-  			{note: 'B3', active: false},
-  			{note: 'G3', active: false},
-  			{note: 'D4', active: false},
-  			{note: 'E4', active: false},
-  			{note: 'G4', active: false},
-  			{note: 'C5', active: false},
-  			{note: 'D5', active: false},
-  			{note: 'E5', active: false},
-  			{note: 'G5', active: false},
-  			{note: 'A5', active: false},
+  			{note: 'B3', active: false, keyCode: 'q'},
+  			{note: 'G3', active: false, keyCode: 'w'},
+  			{note: 'D4', active: false, keyCode: 'e'},
+  			{note: 'E4', active: false, keyCode: 'r'},
+  			{note: 'G4', active: false, keyCode: 't'},
+  			{note: 'C5', active: false, keyCode: 'a'},
+  			{note: 'D5', active: false, keyCode: 's'},
+  			{note: 'E5', active: false, keyCode: 'd'},
+  			{note: 'G5', active: false, keyCode: 'f'},
+  			{note: 'A5', active: false, keyCode: 'g'},
   		],
   		rawPart: {
   			start: 0,
@@ -42,25 +44,25 @@ export default {
   			events: []
   		},
   		loops: [
-  		// 	{
-  		// 		events: [
-		  // 			{note: 'C4', duration: 0.5, start: 0.2},
-		  // 			{note: 'C5', duration: 1.2, start: 1},
-		  // 			{note: 'E4', duration: 0.5, start: 3.2},
-				// ],
-				// interval: 8200
-  		// 	}
+  		
   		],
   		compose: {
   			synth: {}
   		},
-  		tone: {
-  			synth: {},
-  			panner: {},
-  			echo: {},
-  			delay: {},
-  			loop: {}			
-  		}
+		line0: {
+			synth: {},
+			panner: {},
+			echo: {},
+			delay: {},
+			loop: {}			  				
+		},
+		line1: {
+			synth: {},
+			panner: {},
+			echo: {},
+			delay: {},
+			loop: {}			  				
+		}
   	}
   },
   methods: {
@@ -85,6 +87,7 @@ export default {
   		})
 
   		newLoop.interval = (this.rawPart.end - this.rawPart.start + this.loopPause) * 1000
+  		newLoop.start = 0
   		this.loops.push(newLoop)
 
   		this.rawPart = {
@@ -106,7 +109,7 @@ export default {
 	  		this.rawPart.events.push(event)  			
   		}
 
-  		this.compose.synth.triggerAttack(note)
+  		this.compose.synth.triggerAttack(note, undefined, 0.75)
   	},
   	release (note) {
   		if (this.recording) {
@@ -119,39 +122,77 @@ export default {
   	},
   	playLoops () {
   		var vue = this
-  		vue.loops.forEach((loop)=>{
+  		vue.loops.forEach((loop, index)=>{
   			function startLoop() {
 			  	Tone.Transport.schedule((time) => {
 			  		loop.events.forEach((event) => {
-			  			vue.tone.synth.triggerAttackRelease(event.note, event.duration, time + event.start)
+			  			let line = 'line' + index
+			  			vue[line].synth.triggerAttackRelease(event.note, event.duration, time + event.start, 0.75)
 			  		})
 
 			  		setTimeout(startLoop, loop.interval)
-			  	})  				
+			  	}, loop.start)  				
   			}
 
   			startLoop()
   		})
+
+	  	Tone.Transport.start()
+  		vue.playing = true
+  	},
+  	stopLoops () {
+  		Tone.Transport.stop()
+  		this.playing = false
   	}
   },
   mounted () {
+  	// Line 0
+  	this.line0.synth = new Tone.PolySynth(7, Tone.AMSynth)
+  	this.line0.panner = new Tone.Panner(-0.5)
+	this.line0.echo = new Tone.FeedbackDelay('16n', 0.4)
+  	this.line0.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
+  	this.line0.loop = new Tone.Gain(0.5)
+
+  	this.line0.synth.connect(this.line0.panner)
+  	this.line0.panner.connect(this.line0.echo)
+  	this.line0.echo.fan(Tone.Master, this.line0.delay)
+  	this.line0.delay.fan(Tone.Master, this.line0.loop)
+  	this.line0.loop.connect(this.line0.delay)
+
+
+  	// Line 1
+  	this.line1.synth = new Tone.PolySynth(7, Tone.AMSynth)
+  	this.line1.panner = new Tone.Panner(-0.5)
+	this.line1.echo = new Tone.FeedbackDelay('16n', 0.4)
+  	this.line1.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
+  	this.line1.loop = new Tone.Gain(0.5)
+
+  	this.line1.synth.connect(this.line1.panner)
+  	this.line1.panner.connect(this.line1.echo)
+  	this.line1.echo.fan(Tone.Master, this.line1.delay)
+  	this.line1.delay.fan(Tone.Master, this.line1.loop)
+  	this.line1.loop.connect(this.line1.delay)
+
+  	// Composition
   	this.compose.synth = new Tone.PolySynth(7, Tone.AMSynth)
-
-  	this.tone.synth = new Tone.PolySynth(7, Tone.AMSynth)
-  	this.tone.panner = new Tone.Panner(0)
-  	this.tone.echo = new Tone.FeedbackDelay('16n', 0.4)
-  	this.tone.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
-  	this.tone.loop = new Tone.Gain(0.5)
-
-  	this.compose.synth.connect(this.tone.panner)
-  	this.tone.synth.connect(this.tone.panner)
-  	this.tone.panner.connect(this.tone.echo)
-  	this.tone.echo.fan(Tone.Master, this.tone.delay)
-  	this.tone.delay.fan(Tone.Master, this.tone.loop)
-  	this.tone.loop.connect(this.tone.delay)
+  	this.compose.synth.connect(this.line0.panner)
 
 
-  	Tone.Transport.start()
+  	this.triggers.forEach((trigger)=>{
+      window.addEventListener('keydown', (e) => {
+        if (e.key === trigger.keyCode & !e.repeat) {
+          this.attack(trigger.note)
+          trigger.active = true
+        }
+      })
+
+      window.addEventListener('keyup', (e) => {
+        if (e.key === trigger.keyCode & !e.repeat) {
+        	this.release(trigger.note)
+        	trigger.active = false
+        }
+      })
+  	})
   }
 }
 </script>
@@ -166,15 +207,18 @@ export default {
 
 .synthTrigger {
 	border: 1px solid black;
-	flex-basis: 18%;
+	flex-basis: 20%;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	p {
-		font-size: 100px;
-	}
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .active {
@@ -182,7 +226,27 @@ export default {
 }
 
 #controls {
+	display: flex;
+	height: 10vh;
+	align-items: center;
 
+	.recordingButton {
+		flex-grow: 2;
+	}
+
+	button {
+		flex-grow: 1;
+		height: 80%; 
+
+	}
+
+	#startButton {
+		background-color: green;
+	}
+
+	#endButton {
+		background-color: red;
+	}
 }
 
 </style>
