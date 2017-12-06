@@ -35,16 +35,18 @@ export default {
     	line0: {
     		synth: {},
     		panner: {},
+    		filter: {},
     		echo: {},
     		delay: {},
-    		loop: {}			  				
+    		loop: {},
     	},
     	line1: {
     		synth: {},
     		panner: {},
+    		filter: {},
     		echo: {},
     		delay: {},
-    		loop: {}			  				
+    		loop: {},
     	}
     }
   },
@@ -64,29 +66,35 @@ export default {
 	  	// Line 0
 	  	this.line0.synth = new Tone.PolySynth(7, Tone.AMSynth)
 	  	this.line0.panner = new Tone.Panner(-0.5)
+	  	this.line0.filter = new Tone.Filter()
 	    this.line0.echo = new Tone.FeedbackDelay('16n', 0.4)
 	  	this.line0.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
 	  	this.line0.loop = new Tone.Gain(0.5)
 
 	  	this.line0.synth.connect(this.line0.panner)
-	  	this.line0.panner.connect(this.line0.echo)
+	  	this.line0.panner.connect(this.line0.filter)
+	  	this.line0.filter.connect(this.line0.echo)
 	  	this.line0.echo.fan(Tone.Master, this.line0.delay)
 	  	this.line0.delay.fan(Tone.Master, this.line0.loop)
 	  	this.line0.loop.connect(this.line0.delay)
 
 
+
 	  	// Line 1
 	  	this.line1.synth = new Tone.PolySynth(7, Tone.AMSynth)
 	  	this.line1.panner = new Tone.Panner(0.5)
+	  	this.line1.filter = new Tone.Filter()
 	    this.line1.echo = new Tone.FeedbackDelay('16n', 0.4)
 	  	this.line1.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
 	  	this.line1.loop = new Tone.Gain(0.5)
 
 	  	this.line1.synth.connect(this.line1.panner)
-	  	this.line1.panner.connect(this.line1.echo)
+	  	this.line1.panner.connect(this.line1.filter)
+	  	this.line1.filter.connect(this.line1.echo)
 	  	this.line1.echo.fan(Tone.Master, this.line1.delay)
 	  	this.line1.delay.fan(Tone.Master, this.line1.loop)
 	  	this.line1.loop.connect(this.line1.delay)
+
   	},
   	saveLoop (exportedLoop) {
   		this.loops[exportedLoop.index] = exportedLoop

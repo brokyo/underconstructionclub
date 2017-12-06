@@ -118,8 +118,10 @@ export default {
     this.compose.echo = new Tone.FeedbackDelay('16n', 0.4)
     this.compose.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
     this.compose.loop = new Tone.Gain(0.5)
+    this.compose.filter = new Tone.Filter()
 
-  	this.compose.synth.connect(this.compose.echo)
+  	this.compose.synth.connect(this.compose.filter)
+    this.compose.filter.connect(this.compose.echo)
     this.compose.echo.fan(Tone.Master, this.compose.delay)
     this.compose.delay.fan(Tone.Master, this.compose.loop)
     this.compose.loop.connect(this.compose.delay)

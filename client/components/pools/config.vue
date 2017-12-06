@@ -28,6 +28,7 @@ export default {
   		var vue = this
   		vue.loops.forEach((loop, index)=>{
   			function startLoop() {
+  				console.log('again')
 			  	Tone.Transport.schedule((time) => {
 			  		loop.events.forEach((event) => {
 			  			let line = 'line' + index
@@ -37,7 +38,7 @@ export default {
   			}
 
   			startLoop()
-	  		setInterval(startLoop, loop.interval *  1000)
+	  		setInterval(startLoop, loop.length + (loop.interval *  1000))
 
   		})
 
