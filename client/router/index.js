@@ -10,6 +10,7 @@ Vue.use(Meta)
 import Home from '../views/Home'
 import Signup from '../views/SignUp'
 import Windows from '../views/Windows'
+import Fade from '../views/Fade'
 
 export default new Router({
   mode: 'history',
@@ -25,6 +26,10 @@ export default new Router({
     {
       path: '/windows',
       component: Windows
+    },
+    {
+      path: '/fade',
+      component: Fade
     }
   ]
 })
