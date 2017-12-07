@@ -64,7 +64,7 @@ export default {
   	},
   	constructTone () {
 	  	// Line 0
-	  	this.line0.synth = new Tone.PolySynth(7, Tone.AMSynth)
+	  	this.line0.synth = new Tone.PolySynth(5, Tone.AMSynth)
 	  	this.line0.panner = new Tone.Panner(-0.5)
 	  	this.line0.filter = new Tone.Filter()
 	    this.line0.echo = new Tone.FeedbackDelay('8n', 0.4)
@@ -81,7 +81,7 @@ export default {
 
 
 	  	// Line 1
-	  	this.line1.synth = new Tone.PolySynth(7, Tone.AMSynth)
+	  	this.line1.synth = new Tone.PolySynth(5, Tone.AMSynth)
 	  	this.line1.panner = new Tone.Panner(0.5)
 	  	this.line1.filter = new Tone.Filter()
 	    this.line1.echo = new Tone.FeedbackDelay('8n', 0.4)

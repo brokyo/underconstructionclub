@@ -17,39 +17,7 @@ var Tone = require('tone')
 
 export default {
   name: 'config',
-  props: ['loops'],
-  data () {
-    return {
-
-    }
-  },
-  methods: {
-  	playLoops () {
-  		var vue = this
-  		vue.loops.forEach((loop, index)=>{
-  			function startLoop() {
-  				console.log('again')
-			  	Tone.Transport.schedule((time) => {
-			  		loop.events.forEach((event) => {
-			  			let line = 'line' + index
-			  			vue.$parent[line].synth.triggerAttackRelease(event.note, event.duration, time + event.start, 0.75)
-			  		})
-			  	}, loop.start)  				
-  			}
-
-  			startLoop()
-	  		setInterval(startLoop, loop.length + (loop.interval *  1000))
-
-  		})
-
-	  	Tone.Transport.start()
-  		vue.playing = true
-  	},
-  	stopLoops () {
-  		Tone.Transport.stop()
-  		this.playing = false
-  	}
-  }
+  props: ['loops']
 }
 </script>
 

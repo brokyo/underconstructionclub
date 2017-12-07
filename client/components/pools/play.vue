@@ -24,24 +24,24 @@ export default {
   },
   methods: {
   	playLoops () {
-  		var vue = this
-  		vue.loops.forEach((loop, index)=>{
-  			function startLoop() {
-			  	Tone.Transport.schedule((time) => {
-			  		loop.events.forEach((event) => {
-			  			let line = 'line' + index
-			  			vue.$parent[line].synth.triggerAttackRelease(event.note, event.duration, time + event.start, 0.75)
-			  		})
-			  	}, loop.start)  				
-  			}
+  		this.loops.forEach((loop, index)=>{
+  			let newLoop = new Tone.Loop((time) => {
+  				
+  				// Do The mutation here
+  				console.log(time)
 
-  			startLoop()
-	  		setInterval(startLoop, loop.length + (loop.interval *  1000))
+  				loop.events.forEach((event) => {
+  					let line = 'line' + index
+  					this.$parent[line].synth.triggerAttackRelease(event.note, event.duration, time + event.start, 0.75)
+  				})
+  			}, loop.length + loop.interval)
+
+  			newLoop.start(loop.start)
 
   		})
 
 	  	Tone.Transport.start()
-  		vue.playing = true
+  		this.playing = true
   	}
   },
   mounted () {
