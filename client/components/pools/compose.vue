@@ -44,12 +44,6 @@ export default {
   		},
   		loop0: [],
       loop1: [],
-  		compose: {
-  			synth: {},
-        echo: {},
-        delay: {},
-        loop: {}
-  		}
   	}
   },
   methods: {
@@ -101,7 +95,7 @@ export default {
 	  		this.rawPart.events.push(event)  			
   		}
 
-  		this.compose.synth.triggerAttack(note, undefined, 0.75)
+  		this.$parent.line0.synth.triggerAttack(note, undefined, 0.75)
   	},
   	release (note) {
   		if (this.recording !== false) {
@@ -110,23 +104,10 @@ export default {
 	  		event.active = false
   		}
 
-  		this.compose.synth.triggerRelease(note)
+  		this.$parent.line0.synth.triggerRelease(note)
   	}
   },
   mounted () {
-  	this.compose.synth = new Tone.PolySynth(7, Tone.AMSynth)
-    this.compose.echo = new Tone.FeedbackDelay('16n', 0.4)
-    this.compose.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
-    this.compose.loop = new Tone.Gain(0.5)
-    this.compose.filter = new Tone.Filter()
-
-  	this.compose.synth.connect(this.compose.filter)
-    this.compose.filter.connect(this.compose.echo)
-    this.compose.echo.fan(Tone.Master, this.compose.delay)
-    this.compose.delay.fan(Tone.Master, this.compose.loop)
-    this.compose.loop.connect(this.compose.delay)
-
-
   	this.triggers.forEach((trigger)=>{
       window.addEventListener('keydown', (e) => {
         if (e.key === trigger.keyCode & !e.repeat) {

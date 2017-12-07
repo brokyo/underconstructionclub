@@ -30,7 +30,7 @@ export default {
   data () {
     return {
     	started: false,
-    	state: 'home',
+    	state: 'compose',
     	loops: [],
     	line0: {
     		synth: {},
@@ -67,7 +67,7 @@ export default {
 	  	this.line0.synth = new Tone.PolySynth(7, Tone.AMSynth)
 	  	this.line0.panner = new Tone.Panner(-0.5)
 	  	this.line0.filter = new Tone.Filter()
-	    this.line0.echo = new Tone.FeedbackDelay('16n', 0.4)
+	    this.line0.echo = new Tone.FeedbackDelay('8n', 0.4)
 	  	this.line0.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
 	  	this.line0.loop = new Tone.Gain(0.5)
 
@@ -84,7 +84,7 @@ export default {
 	  	this.line1.synth = new Tone.PolySynth(7, Tone.AMSynth)
 	  	this.line1.panner = new Tone.Panner(0.5)
 	  	this.line1.filter = new Tone.Filter()
-	    this.line1.echo = new Tone.FeedbackDelay('16n', 0.4)
+	    this.line1.echo = new Tone.FeedbackDelay('8n', 0.4)
 	  	this.line1.delay = new Tone.Delay({delayTime: 5, maxDelay: 179})
 	  	this.line1.loop = new Tone.Gain(0.5)
 
