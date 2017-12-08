@@ -30,7 +30,7 @@ export default {
   data () {
     return {
     	started: false,
-    	state: 'config',
+    	state: 'compose',
     	loops: [
     		{
     			events: [
