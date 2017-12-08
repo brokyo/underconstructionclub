@@ -2,32 +2,14 @@
   <main>
     <pre>Want to collaborate? Github projects <a href="https://github.com/brokyo">are here</a> or just <a href="mailto:alexcarusillo@gmail.com">email me</a> no tech skills required</pre>
     <h2>Log</h2>
-    <pre>11-29-17</pre>
-    <p>Spent yesterday making a weird drone painting thing. It's great. Try opening it in the corner of your screen while you do other work.</p>
-    <p>Thinking about making it an app but the art will need to be more considered - let me know if you've got thoughts.</p>
+    <pre>12-08-17</pre>
+    <p><a href="/pools">Prototype for looping music box.</a> Probably works on phones.</p>
     <p>Sign up for the update letter, if you want.</p>
     <div class="emailSignupContainer">
       <div class="signupForm">
         <label>Enter email for updates</label>
         <input type="text" v-model="email"></input>
         <button @click="submit" :disabled="!email">Join</button>
-      </div>
-    </div>
-    <hr>
-    <div class="projectContainer">
-      <div class="projectCopy">
-        <h2><a href="/windows">Windows</a></h2>
-        <h4>What is it:</h4>
-        <p>Randomly generated drones and painting. Click and drag to change color and shapes. Opening several windows at a time is fun too. Works on mobile supposedly.</p>
-        <h4>How far along:</h4>
-        <p>Quick prototype for something else but might end up making this an ionic app so it can be properly used on phones/appletv/<a href="https://frm.fm">framed.</a></p>
-        <h4>Next feature:</h4>
-        <p>Improving the control system and painting evolution</p>
-      </div>
-      <div class="projectImage">
-        <a href="/windows">
-          <img src="/images/windows.png"></img>
-        </a>
       </div>
     </div>
     <hr>
@@ -50,6 +32,40 @@
     <hr>
     <div class="projectContainer">
       <div class="projectCopy">
+        <h2><a href="/pools">Pools</a></h2>
+        <h4>What is it:</h4>
+        <p>Software part of a physical musicbox device I'm making. Putting this up so I can get to it. Click the record button to record a loop (press on phones/ QWERT & ASDFG on desktop), save it, and add mutation params. Plays indefinitely once in play tab. Simple is better.</p>
+        <h4>How far along:</h4>
+        <p>so v0</p>
+        <h4>Next feature:</h4>
+        <p>Better mutation config. Physical device prototype</p>
+      </div>
+      <div class="projectImage">
+        <a href="/pools">
+          <img src="/images/fade.png"></img>
+        </a>
+      </div>
+    </div>
+    <hr>
+    <div class="projectContainer">
+      <div class="projectCopy">
+        <h2><a href="/windows">Windows</a></h2>
+        <h4>What is it:</h4>
+        <p>Randomly generated drones and painting. Click and drag to change color and shapes. Opening several windows at a time is fun too. Works on mobile supposedly.</p>
+        <h4>How far along:</h4>
+        <p>Quick prototype for something else but might end up making this an ionic app so it can be properly used on phones/appletv/<a href="https://frm.fm">framed.</a></p>
+        <h4>Next feature:</h4>
+        <p>Improving the control system and painting evolution</p>
+      </div>
+      <div class="projectImage">
+        <a href="/windows">
+          <img src="/images/windows.png"></img>
+        </a>
+      </div>
+    </div>
+    <hr>
+    <div class="projectContainer">
+      <div class="projectCopy">
         <h2><a href="http://geocitiesspelunkers.surge.sh/">Unnamed GeoCities spelunker/memorial thing</a></h2>
         <h4>What is it:</h4>
         <p>Go to a random archived geocities page and - if it's cool - memorialize it so other people can see it.</p>
@@ -62,23 +78,6 @@
       <div class="projectImage">
         <a href="http://geocitiesspelunkers.surge.sh/">
           <img src="/images/su.png"></img>
-        </a>
-      </div>
-    </div>
-    <hr>
-    <div class="projectContainer">
-      <div class="projectCopy">
-        <h2><a href="/pools">[WIP]</a></h2>
-        <h4>What is it:</h4>
-        <p>Work in progress of a physical looping device I'm making. Putting this up so I can get to it. Using it will make very little sense initially. Press the notes on a phone to get a generally idea of where this is going.</p>
-        <h4>How far along:</h4>
-        <p>Literally v -1</p>
-        <h4>Next feature:</h4>
-        <p>Store and play mulitple loops, mutate those loops</p>
-      </div>
-      <div class="projectImage">
-        <a href="/pools">
-          <img src="/images/fade.png"></img>
         </a>
       </div>
     </div>
