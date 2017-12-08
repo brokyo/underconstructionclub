@@ -70,6 +70,10 @@ export default {
   		newLoop.length = this.rawPart.end - this.rawPart.start
       newLoop.interval = 5
   		newLoop.start = 0
+      newLoop.playbackRate = 1
+      newLoop.maxShift = 0
+
+
 
       let constructedLoop = 'loop' + index
   		this[constructedLoop] = newLoop
@@ -89,6 +93,8 @@ export default {
   		if (this.recording !== false){
 	  		let event = {
 	  			note: note,
+          frequency: Tone.Frequency(note).toFrequency(),
+          midi: Tone.Frequency(note).toMidi(),
 	  			start: Date.now() / 1000,
 	  			active: true
 	  		}

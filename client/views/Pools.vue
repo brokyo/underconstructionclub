@@ -30,8 +30,36 @@ export default {
   data () {
     return {
     	started: false,
-    	state: 'compose',
-    	loops: [],
+    	state: 'config',
+    	loops: [
+    		{
+    			events: [
+    				{start: 0, duration: 1, midi: 79, note: 'G5',},
+    				{start: 1, duration: 1, midi: 80, note: 'A5',},
+    				{start: 2, duration: 2, midi: 82, note: 'C5',}
+    			],
+    			index: 0,
+    			interval: 5,
+    			length: 5,
+    			maxShift: 0,
+    			playbackRate: 1,
+    			start: 0
+    		},
+    		{
+    			events: [
+    				{start: 10, duration: 5, midi: 87, note: 'G5',},
+    				{start: 22, duration: 11, midi: 72, note: 'A5',},
+    				{start: 34, duration: 2, midi: 91, note: 'C5',}
+    			],
+    			index: 1,
+    			interval: 5,
+    			length: 45,
+    			maxShift: 0,
+    			playbackRate: 1,
+    			start: 0
+    		}
+
+    	],
     	line0: {
     		synth: {},
     		panner: {},
