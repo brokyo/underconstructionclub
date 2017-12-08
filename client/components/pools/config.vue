@@ -10,7 +10,8 @@
     	<input v-model="loop.playbackRate"></input>
     	<label>Note Shift Range</label>
     	<input v-model="loop.maxShift"></input>
-    	<div :id="'canvas'+index"></div>
+      </div>
+      <div id="canvas">
       </div>
 	</main>
 </template>
@@ -34,47 +35,68 @@ export default {
   		let systemMidiMax = []
 
   		systems.forEach((system) => {
-			systemMidiMin.push(_.minBy(system.events, 'midi').midi)
-			systemMidiMax.push(_.maxBy(system.events, 'midi').midi)
-		})
+  			systemMidiMin.push(_.minBy(system.events, 'midi').midi)
+	   		systemMidiMax.push(_.maxBy(system.events, 'midi').midi)
+		  })
 
-		let max = _.max(systemMidiMax) + 3 
-		console.log(max)
-		let min = _.min(systemMidiMin) - 3
-		console.log(min)
-		return {range: max - min , max: max}
-  	}
+  		let max = _.max(systemMidiMax) + 3
+  		let min = _.min(systemMidiMin) - 3
+  		return {range: max - min , max: max}
+  	},
+    getSystemDuration() {
+      let allDurations = []
+      this.loops.forEach((loop) => {
+        allDurations.push(loop.length)
+      })
+
+      let systemDuration = _.max(allDurations)
+
+      return systemDuration
+    }
   },
   mounted () {
   	var vue = this
 
   	let midiLength = this.getMidiLength(this.loops)
-  	console.log(midiLength)
-  	this.loops.forEach((loop) => {	  	
-  		// Vue values
-	  	var canvasWidth = 800
-	  	var canvasHeight = 200
+		// Vue values
+  	var canvasWidth = 800
+  	var canvasHeight = 200
 
-	  	var pixPerSecond = canvasWidth / (loop.length - loop.start)
-	  	var pixPerNote = canvasHeight / midiLength.range
+    var systemDuration = this.getSystemDuration()
 
+  	var canvasPixPerSecond = canvasWidth / systemDuration
+    var canvasPixPerSystemHeight = canvasHeight / this.loops.length
 
-	  	// P5 setup
-	  	var myp5 = new p5((sketch) => {
-		  sketch.setup = function() {
-		  	let canvas = sketch.createCanvas(canvasWidth, canvasHeight);
-		    canvas.parent('canvas' + loop.index)
-		    sketch.background(0)
-		    sketch.noLoop()
-		  };
+  	var pixPerNote = canvasPixPerSystemHeight / midiLength.range
 
-		  sketch.draw = function() {
-		  	loop.events.forEach((event) => {
-			    sketch.fill(255);
-			    sketch.rect(event.start * pixPerSecond, (midiLength.max - event.midi) * pixPerNote, event.duration * pixPerSecond, pixPerNote);
-		  	})
-		  };
-	  	})
+    let count = 0
+  	// P5 setup
+  	var myp5 = new p5((sketch) => {
+  	  sketch.setup = () => {
+  	  	let canvas = sketch.createCanvas(canvasWidth, canvasHeight);
+  	    canvas.parent('canvas')
+  	    sketch.background(0)
+        // sketch.noLoop()
+  	  };
+
+  	  sketch.draw = () => {
+        sketch.background(0)
+        this.loops.forEach((loop, index) => {
+          let systemWidth = loop.length * canvasPixPerSecond
+          let systemHeight = loop.length * canvasPixPerSystemHeight
+
+          sketch.fill('rgba(55, 55, 55, 0.4)')
+          sketch.rect(loop.start * canvasPixPerSecond, index * canvasPixPerSystemHeight, systemWidth, canvasPixPerSystemHeight )
+
+          loop.events.forEach((event) => {
+            var eventPixPerSecond = systemWidth / loop.length
+
+            sketch.fill(255);
+            sketch.rect((event.start + loop.start) * eventPixPerSecond, ((midiLength.max - event.midi) * pixPerNote) + (index * canvasPixPerSystemHeight), event.duration * eventPixPerSecond, pixPerNote);
+          })
+
+        })
+      }
   	})
   }
 }

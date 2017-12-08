@@ -36,11 +36,14 @@ export default {
     			events: [
     				{start: 0, duration: 1, midi: 79, note: 'G5',},
     				{start: 1, duration: 1, midi: 80, note: 'A5',},
-    				{start: 2, duration: 2, midi: 82, note: 'C5',}
+    				{start: 2, duration: 2, midi: 82, note: 'C5',},
+            {start: 20, duration: 1, midi: 79, note: 'G5',},
+            {start: 21, duration: 1, midi: 80, note: 'A5',},
+            {start: 22, duration: 2, midi: 82, note: 'C5',}
     			],
     			index: 0,
     			interval: 5,
-    			length: 5,
+    			length: 30,
     			maxShift: 0,
     			playbackRate: 1,
     			start: 0
@@ -133,7 +136,7 @@ export default {
   		this.started = false
   	} else {
   		this.started = true
-  		this.constructTone()  		
+  		this.constructTone()
   	}
   }
 }
