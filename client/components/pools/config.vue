@@ -13,6 +13,7 @@
       </div>
       <div id="canvas">
       </div>
+      <pre>{{loops}}</pre>
 	</main>
 </template>
 
