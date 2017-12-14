@@ -14,9 +14,6 @@
         <input v-model.number="system.noteSmudge"></input>
         <label>Duration Smudge (decimal as percentage. [.1 is 10% in either direction, .5 is 50%, etc])</label>
         <input v-model.number="system.durationSmudge"></input>
-        <lavel
-    	<label>Note Shift Range</label>
-    	<input v-model="system.maxShift"></input>
       </div>
       <div id="canvas">
       </div>

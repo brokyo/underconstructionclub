@@ -1,5 +1,11 @@
 <template>
 	<main>
+		<div>
+			<span>X</span>
+			<p>
+				Click "record" button and play a short melody with QWERT/ASDFG. When you like it click save. Record two then go to "config'"
+			</p>
+		</div>
 		<button id="mobileStart" @click="mobileStart" v-if="!started">iOS Start</button>
 		<div v-if="started">
 			<div>
@@ -33,6 +39,7 @@ export default {
     return {
     	started: false,
     	state: 'compose',
+			hideTip: false,
       // showTune: true,
     	systems: [
  {
