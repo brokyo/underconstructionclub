@@ -1,19 +1,26 @@
 <template>
 	<main>
-      <div v-for="(loop, index) in loops">
-        <h3>Loop {{index}} - {{Math.round(loop.length * 100) / 100}} Seconds</h3>
-        <label>Start</label>
-        <input v-model="loop.start"></input>
-        <label>Interval</label>
-        <input v-model="loop.interval"></input>
-        <label>Playback Rate</label>
-    	<input v-model="loop.playbackRate"></input>
+      <div v-for="(system, index) in systems">
+        <h3>system {{index}} - {{Math.round(system.length * 100) / 100}} Seconds</h3>
+        <label>Start (seconds)</label>
+        <input v-model.number="system.start"></input>
+        <label>Interval (seconds)</label>
+        <input v-model.number="system.interval"></input>
+        <label>Playback Rate (1 is normal speed, .5 half, etc)</label>
+        <input v-model.number="system.playbackRate"></input>
+        <label>Playback Rate range (decimal as percentage [0 is no change, 0.5 50% more or less, etc) </label>
+        <input v-model.number="system.playbackRange"></input>
+        <label>Note Smudge (decimal as percentage. [.1 is 10% in either direction, .5 is 50%, etc])</label>
+        <input v-model.number="system.noteSmudge"></input>
+        <label>Duration Smudge (decimal as percentage. [.1 is 10% in either direction, .5 is 50%, etc])</label>
+        <input v-model.number="system.durationSmudge"></input>
+        <lavel
     	<label>Note Shift Range</label>
-    	<input v-model="loop.maxShift"></input>
+    	<input v-model="system.maxShift"></input>
       </div>
       <div id="canvas">
       </div>
-      <pre>{{loops}}</pre>
+      <pre>{{systems}}</pre>
 	</main>
 </template>
 
@@ -24,7 +31,7 @@ var _ = require('lodash')
 
 export default {
   name: 'config',
-  props: ['loops'],
+  props: ['systems'],
   data () {
   	return {
       p5Objects: []
@@ -36,8 +43,8 @@ export default {
   		let systemMidiMax = []
 
   		systems.forEach((system) => {
-  			systemMidiMin.push(_.minBy(system.events, 'midi').midi)
-	   		systemMidiMax.push(_.maxBy(system.events, 'midi').midi)
+  			systemMidiMin.push(_.minBy(system.seeds, 'midi').midi)
+	   		systemMidiMax.push(_.maxBy(system.seeds, 'midi').midi)
 		  })
 
   		let max = _.max(systemMidiMax) + 3
@@ -46,11 +53,11 @@ export default {
   	},
     getSystemDuration() {
       let allDurations = []
-      this.loops.forEach((loop) => {
-        allDurations.push(loop.length)
+      this.systems.forEach((system) => {
+        allDurations.push(system.length)
       })
 
-      let systemDuration = _.max(allDurations)
+      let systemDuration = _.sum(allDurations)
 
       return systemDuration
     }
@@ -58,7 +65,7 @@ export default {
   mounted () {
   	var vue = this
 
-  	let midiLength = this.getMidiLength(this.loops)
+  	let midiLength = this.getMidiLength(this.systems)
 
 		// Vue values
   	var canvasWidth = 1200
@@ -67,7 +74,7 @@ export default {
     var systemDuration = this.getSystemDuration()
 
   	var canvasPixPerSecond = canvasWidth / systemDuration
-    var canvasPixPerSystemHeight = canvasHeight / this.loops.length
+    var canvasPixPerSystemHeight = canvasHeight / this.systems.length
 
   	var pixPerNote = canvasPixPerSystemHeight / midiLength.range
 
@@ -82,20 +89,19 @@ export default {
 
       this.systemWidth = system.length * canvasPixPerSecond
       this.seedPixPerSecond = this.systemWidth / system.length
-      console.log(this.seedPixPerSecond)
 
       this.display = function(sketch) {
         sketch.rect(system.start * canvasPixPerSecond, this.y, system.length * canvasPixPerSecond, this.height)
       }
 
       this.drawSeeds = function(sketch) {
-        system.events.forEach((seed) => {
+        system.seeds.forEach((seed) => {
           sketch.rect((seed.start * this.seedPixPerSecond) + (system.start * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
         })
       }
 
       this.drawEcho = function(sketch) {
-        system.events.forEach((seed) => {
+        system.seeds.forEach((seed) => {
           for (var i = 1; i < system.echo; i++) {
             sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.echo)) + ')')
             sketch.rect((seed.start * this.seedPixPerSecond) + (system.start * this.seedPixPerSecond) + ((5 * i) * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
@@ -104,7 +110,7 @@ export default {
       }
     }
 
-    this.loops.forEach((system) => {
+    this.systems.forEach((system) => {
       this.p5Objects.push(new System(system))
     })
 
