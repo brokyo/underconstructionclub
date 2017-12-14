@@ -1,7 +1,7 @@
 <template>
 	<main>
       <div v-for="(system, index) in systems">
-        <h3>system {{index}} - {{Math.round(system.length * 100) / 100}} Seconds</h3>
+        <h3>system {{index}} - {{system.systemDuration}} Seconds</h3>
         <label>Start (seconds)</label>
         <input v-model.number="system.start"></input>
         <label>Interval (seconds)</label>
@@ -52,12 +52,10 @@ export default {
   		return {range: max - min , max: max}
   	},
     getSystemDuration() {
-      let allDurations = []
+      let systemDuration = 0
       this.systems.forEach((system) => {
-        allDurations.push(system.length)
+        systemDuration += system.systemDuration
       })
-
-      let systemDuration = _.sum(allDurations)
 
       return systemDuration
     }
@@ -72,7 +70,7 @@ export default {
   	var canvasHeight = 200
 
     var systemDuration = this.getSystemDuration()
-
+    console.log(systemDuration)
   	var canvasPixPerSecond = canvasWidth / systemDuration
     var canvasPixPerSystemHeight = canvasHeight / this.systems.length
 
@@ -80,18 +78,17 @@ export default {
 
 
     function System(system) {
-      system.echo = 10
       // Commented out need to be in display function or they wont update
       // this.x = system.start * canvasPixPerSecond
       this.y = system.index * canvasPixPerSystemHeight
       // this.width = system.length * canvasPixPerSecond
       this.height = canvasPixPerSystemHeight
 
-      this.systemWidth = system.length * canvasPixPerSecond
-      this.seedPixPerSecond = this.systemWidth / system.length
+      this.systemWidth = system.systemDuration * canvasPixPerSecond
+      this.seedPixPerSecond = this.systemWidth / system.systemDuration
 
       this.display = function(sketch) {
-        sketch.rect(system.start * canvasPixPerSecond, this.y, system.length * canvasPixPerSecond, this.height)
+        sketch.rect(system.start * canvasPixPerSecond, this.y, system.systemDuration * canvasPixPerSecond, this.height)
       }
 
       this.drawSeeds = function(sketch) {
@@ -102,8 +99,8 @@ export default {
 
       this.drawEcho = function(sketch) {
         system.seeds.forEach((seed) => {
-          for (var i = 1; i < system.echo; i++) {
-            sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.echo)) + ')')
+          for (var i = 1; i < system.echoCount; i++) {
+            sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.echoCount)) + ')')
             sketch.rect((seed.start * this.seedPixPerSecond) + (system.start * this.seedPixPerSecond) + ((5 * i) * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
           }
         })
