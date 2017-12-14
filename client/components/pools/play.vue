@@ -33,7 +33,7 @@
         })
       },
       loopSystem(system) {
-        console.log('again!')
+        console.log('new loop - system: ', system.index)
         // Temporary (wind blowing leaves) - reset to seeds every loop
         system.systemEvents = _.cloneDeep(system.seeds)
 
@@ -72,6 +72,7 @@
       },
       scheduleEvent (event, lineIndex) {
         Tone.Transport.schedule((time) => {
+          console.log(event, 'system:', lineIndex, 'playAt:', time + event.start)
           let line = 'line' + lineIndex
           this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start)
         })

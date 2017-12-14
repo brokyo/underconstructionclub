@@ -71,7 +71,6 @@ export default {
   	var canvasHeight = 200
 
     var systemDuration = this.getSystemDuration()
-    console.log(systemDuration)
   	var canvasPixPerSecond = canvasWidth / systemDuration
     var canvasPixPerSystemHeight = canvasHeight / this.systems.length
 
