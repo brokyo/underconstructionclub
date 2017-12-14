@@ -72,9 +72,9 @@
       },
       scheduleEvent (event, lineIndex) {
         Tone.Transport.schedule((time) => {
-          console.log(event, 'system:', lineIndex, 'playAt:', time + event.start)
+          console.log('frequency:', event.frequency, 'duration:', event.duration, 'playAt:', time + event.start)
           let line = 'line' + lineIndex
-          this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start)
+          this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start, 0.75)
         })
       },
       applyPlaybackRate (system, event) {

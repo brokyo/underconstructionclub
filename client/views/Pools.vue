@@ -117,13 +117,13 @@ export default {
     ],
     "systemEvents": [],
     "index": 0,
-    "systemDuration": 46.87599992752075,
+    "systemDuration": 34.87599992752075,
     "interval": 5,
     "start": 0,
     "playbackRate": 0.9,
     "playbackRange": 0,
-    "noteSmudge": 0,
-    "durationSmudge": 0,
+    "noteSmudge": 0.05,
+    "durationSmudge": 0.05,
     "echoCount": 10
   },
   {
@@ -166,13 +166,13 @@ export default {
     ],
     "systemEvents": [],
     "index": 1,
-    "systemDuration": 38.07800006866455,
+    "systemDuration": 22.07800006866455,
     "interval": 5,
     "start": 3,
     "playbackRate": 0.6,
     "playbackRange": 0,
     "noteSmudge": 0,
-    "durationSmudge": 0,
+    "durationSmudge": 0.15,
     "echoCount": 10
   }
 			]
