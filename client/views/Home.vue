@@ -34,7 +34,7 @@
       <div class="projectCopy">
         <h2><a href="/pools">Pools</a></h2>
         <h4>What is it:</h4>
-        <p>Software part of a physical musicbox device I'm making. Putting this up so I can get to it. Click the record button to record a loop (press on phones/ QWERT & ASDFG on desktop), save it, and add mutation params. Plays indefinitely once in play tab. Simple is better.</p>
+        <p>Software part of a physical musicbox I'm building. Click the record button to record a loop (press on phones/ QWERT & ASDFG on desktop), save it, and give it mutation parameters (10% chance to change note, 5% chance to play one loop at half speed, etc.) Plays indefinitely once in play tab. Simple is better.</p>
         <h4>How far along:</h4>
         <p>so v0</p>
         <h4>Next feature:</h4>

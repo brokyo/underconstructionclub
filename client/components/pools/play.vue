@@ -32,6 +32,7 @@
         })
       },
       loopSystem(system) {
+        console.log('again!')
         // Temporary (wind blowing leaves) - reset to seeds every loop
         system.systemEvents = _.cloneDeep(system.seeds)
   
