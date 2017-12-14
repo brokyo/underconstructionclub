@@ -2,18 +2,22 @@
 	<main>
       <div v-for="(system, index) in systems">
         <h3>system {{index}} - {{system.systemDuration}} Seconds</h3>
-        <label>Start (seconds)</label>
         <input v-model.number="system.start"></input>
-        <label>Interval (seconds)</label>
+        <label>Start (seconds)</label>
+        <br>
         <input v-model.number="system.interval"></input>
-        <label>Playback Rate (1 is normal speed, .5 half, etc)</label>
+        <label>Interval (seconds)</label>
+        <br>
         <input v-model.number="system.playbackRate"></input>
-        <label>Playback Rate range (decimal as percentage [0 is no change, 0.5 50% more or less, etc) </label>
-        <input v-model.number="system.playbackRange"></input>
-        <label>Note Smudge (decimal as percentage. [.1 is 10% in either direction, .5 is 50%, etc])</label>
+        <label>Playback Rate (1 is normal speed, .5 half, etc)</label>
+        <br>
+<!--         <label>Playback Rate range (decimal as percentage [0 is no change, 0.5 50% more or less, etc) </label>
+        <input v-model.number="system.playbackRange"></input> -->
         <input v-model.number="system.noteSmudge"></input>
-        <label>Duration Smudge (decimal as percentage. [.1 is 10% in either direction, .5 is 50%, etc])</label>
+        <label>Note Smudge (decimal as percentage. [.1 is 10% higher or lower (randomly selected) etc])</label>
+        <br>
         <input v-model.number="system.durationSmudge"></input>
+        <label>Duration Smudge (decimal as percentage. [.5 is 50% faster or slower etc])</label>
       </div>
       <div id="canvas">
       </div>
@@ -135,4 +139,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 </style>

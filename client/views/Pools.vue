@@ -1,11 +1,25 @@
 <template>
 	<main>
-		<div>
-			<span>X</span>
-			<p>
-				Click "record" button and play a short melody with QWERT/ASDFG. When you like it click save. Record two then go to "config'"
+		<div id="tooltip" v-if="showTooltip">
+			<p v-if="state === 'compose'">
+				Click "record" button and play a short melody with QWERT/ASDFG. When you like it click the save button. Record in each slot then go to 'config'.
+        Simpler is better. [sound records as heard so let the echo finish]
 			</p>
+      <p v-if="state === 'compose'">
+        You can also just click on the 'play' tab. There's one already in there.
+      </p>
+      <p v-if="state === 'config'">
+        Set playback paremeters. You can just leave this alone but use decimal percentage points to make the system evolve over time. This will be clearer eventually.
+      </p>
+      <p v-if="state === 'play'">
+        Two loops that build on each other and evolve. Click play to listen (indefinitely. This makes ∞ music) or go to other tabs to make your own. This will get a lot more usable soon.
+      </p>
+      <span @click="showTooltip = false">X</span>
 		</div>
+    <div id="banner" v-else>
+      <a href="http://www.under-construction.club">Under Construction Club</a>
+      <span @click="showTooltip = true">+</span>
+    </div>
 		<button id="mobileStart" @click="mobileStart" v-if="!started">iOS Start</button>
 		<div v-if="started">
 			<div>
@@ -38,8 +52,8 @@ export default {
   data () {
     return {
     	started: false,
-    	state: 'compose',
-			hideTip: false,
+    	state: 'play',
+			showTooltip: true,
       // showTune: true,
     	systems: [
  {
@@ -262,6 +276,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  #tooltip {
+    position: fixed;
+    width: 400px;
+    right: 0;
+    background: white;
+    border: 1px solid;
+    padding: 4px;
+    z-index: 999;
+
+    span {
+      position: absolute;
+      top: 2px;
+      right: 7px;
+      border: 1px solid rebeccapurple;
+      padding: 2px;
+      color: rebeccapurple;
+    }
+  }
+
+  #banner {
+    position: absolute;
+    width: 400px;
+    height: 20px;
+    right: 0;
+    background: white;
+    border: 1px solid;
+    padding: 4px;
+    z-index: 999;
+
+    span {
+      position: absolute;
+      top: 2px;
+      right: 7px;
+      border: 1px solid rebeccapurple;
+      padding: 2px;
+      color: rebeccapurple;
+    }
+  }
+
 	#mobileStart {
 		width: 100%;
 		font-size: 32px;
