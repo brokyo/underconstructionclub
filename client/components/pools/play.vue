@@ -1,16 +1,6 @@
 <template>
   <main>
     <button v-if="!playing" @click="startSystem">Play</button>
-    <div id="debug">
-      <div v-for="system in systems">
-        <p>
-          {{system.seeds}}
-        </p>
-        <p>
-          {{system.baseEvents}}
-        </p>
-      </div>
-    </div>
     <img :src="embed"></img>
   </main>
 </template>

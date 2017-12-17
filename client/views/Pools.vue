@@ -199,9 +199,11 @@ export default {
         smudge: .5,
         interval: 1
       },
+      patch: {
+        echo: 10
+      }
     },
-    "index": 0,
-    "echoCount": 10,
+    "index": 0
   },
   {
     "seeds": [
@@ -304,9 +306,11 @@ export default {
         smudge: 0.5,
         interval: 1
       },
+      patch: {
+        echo: 10
+      }
     },
-    "index": 1,
-    "echoCount": 10,
+    "index": 1
   }
 			]
 			,
