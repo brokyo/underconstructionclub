@@ -1,6 +1,12 @@
 <template>
   <main>
     <button v-if="!playing" @click="startSystem">Play</button>
+<!--     <div id="debug">
+      <pre v-for="system in systems">
+        {{system.performanceDuration}}
+        {{system.nextEventsBase}}
+      </pre>
+    </div> -->
     <img :src="embed"></img>
   </main>
 </template>
@@ -15,7 +21,7 @@
       return {
         cacheBreak: 0,
         possibleCams: ['http://207.251.86.238/cctv391.jpg', 'http://206.140.121.226/jpg/image.jpg', 'http://128.151.213.230/jpg/image.jpg', 'http://airportcam.puc.edu/-wvhttp-01-/GetStillImage?camera_id=1', 'http://82.144.57.103/oneshotimage.jpg', 'http://pcc.miemasu.net/snapshotJPEG?Resolution=640x480&amp;Quality=Clarity', 'http://ds4ams.viewnetcam.com/snapshotJPEG?resolution=320x240'],
-        playing: false,
+        playing: false
       }
     },
     computed: {
@@ -27,85 +33,70 @@
       startSystem(system) {
         this.playing = true
         this.systems.forEach((system) => {
-          system.systemEvents = _.cloneDeep(system.seeds)
-
-          setTimeout(() => this.loopSystem(system), system.timing.start * 1000)
+          setTimeout(() => this.loopSystem(system), system.params.timing.start * 1000)
         })
       },
       loopSystem(system) {
-        // console.log('new loop - system: ', system.index)
         // Temporary (wind blowing leaves) - reset to seeds every loop
-        system.systemEvents = _.cloneDeep(system.seeds)
+        system.nextEventsBase = _.cloneDeep(system.seeds)
 
         // Semi-permanent (snow on a car windshield) let event changes compound then after x loops move back to seed
 
-        // For probability (puddles near the cub) apply changes only to one note
+        // For probability (puddles near the curb) apply changes only to one note
 
+        // Change Playback
+        if (system.active.loops % system.params.playback.interval === 0) {
+          this.changePlaybackRate(system)
+        }
+
+        // Change Frequency
+        if (system.active.loops % system.params.note.interval === 0) {
+          this.changeFrequencyPercent(system)
+        }
+
+        // Change Duration
+        if (system.active.loops % system.params.duration.interval === 0) {
+          this.changeDurationPercent(system)
+        }
 
         // Tracks additional start delay time based on duration smudge
-        let compoundSmudge, changedDuration, smudgePercent
+        let compoundSmudge, changedDuration
         compoundSmudge = 0
-        smudgePercent = _.random(-system.duration.smudge, system.duration.smudge)
 
-        system.systemEvents.forEach((event, index) => {
-          // Calculate compounding smudge
+        // Select new notes
+        system.nextEventsBase.forEach((event, index) => {
           let smudgeAmount, newDuration
-          smudgeAmount = event.duration * smudgePercent
+          smudgeAmount = event.duration *= system.active.durationSmudge
           compoundSmudge += smudgeAmount
 
-          event.frequency += _.random(system.note.smudge)
-          event.duration += smudgeAmount
-          event.start += compoundSmudge
+          event.frequency *= system.active.noteSmudge *= system.active.playbackRate
+          event.duration *= smudgeAmount /= system.active.playbackRate
+          event.start += compoundSmudge /= system.active.playbackRate
 
-          // Apply playback rate changes and schedule event
-          this.scheduleEvent(this.applyPlaybackRate(system, event), system.index)
+          this.scheduleEvent(event, system.index)
 
         })
 
-
-        this.changeDuration(system)
-
-        // Call self
-        let loopInterval = (system.performanceDuration + system.timing.interval) / system.playback.rate * 1000
+        // Update Loop
+        let loopInterval = (system.active.duration * 1000) + (system.params.timing.interval * 1000)
         setTimeout(this.loopSystem, loopInterval, system)
-        // system.loops++
+        system.active.loops++
+      },
+      changePlaybackRate (system) {
+        system.active.playbackRate = system.params.playback.rate * (1 + _.round(_.random(-system.params.playback.range, system.params.playback.range), 2))
+        system.active.duration = system.params.timing.duration / system.active.playbackRate
+      },
+      changeFrequencyPercent (system) {
+        system.active.noteSmudge = 1 + _.round(_.random(-system.params.note.smudge, system.params.note.smudge), 2)
+      },
+      changeDurationPercent (system) {
+        system.active.durationSmudge = 1 + _.round(_.random(-system.params.duration.smudge, system.params.duration.smudge))
       },
       scheduleEvent (event, lineIndex) {
         Tone.Transport.schedule((time) => {
-          // console.log('frequency:', event.frequency, 'duration:', event.duration, 'playAt:', time + event.start)
           let line = 'line' + lineIndex
           this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start, 0.75)
         })
-      },
-      applyPlaybackRate (system, event) {
-        event.frequency *= system.playback.rate
-        event.duration /= system.playback.rate
-        event.start /= system.playback.rate
-
-        return event
-      },
-      changeDuration (system) {
-        let startGap, endGap, eventDuration, firstSeed, finalSeed, finalEchoLength, systemDuration
-
-        firstSeed = _.first(system.systemEvents)
-        finalSeed = _.last(system.systemEvents)
-        startGap = firstSeed.start
-
-
-        finalEchoLength = finalSeed.duration * system.echoCount
-        endGap = system.performanceDuration - (finalEchoLength + finalSeed.start)
-        // Should do something to catch if it's negative
-        eventDuration = (finalSeed.start + finalEchoLength) - firstSeed.start
-
-        // LOL HAX
-        endGap = _.random(2, 8)
-        system.systemDuration = (startGap + eventDuration + endGap) / system.playback.rate
-
-        console.log('system:', system.index)
-        console.log('start gap:', startGap)
-        console.log('event duration:', eventDuration)
-        console.log('endGap:', endGap)
-        console.log('duration:', system.performanceDuration / system.playback.rate)
       }
     },
     mounted() {
@@ -131,5 +122,11 @@
   img {
     height: 100vh;
     width: 100vw;
+  }
+
+  #debug {
+    position: absolute;
+    top: 0;
+    z-index: 999999;
   }
 </style>

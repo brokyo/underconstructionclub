@@ -115,7 +115,7 @@ export default {
         "duration": 1.1590001583099365
       }
     ],
-    "systemEvents": [
+    "nextEventsBase": [
       {
         "note": "C5",
         "frequency": 523.2511306011972,
@@ -173,28 +173,35 @@ export default {
         "duration": 1.1590001583099365
       }
     ],
+    active: {
+      loops: 0,
+      playbackRate: 1,
+      noteSmudge: 0,
+      durationSmudge: 0,
+      duration: 4
+    },
+    params: {
+      timing: {
+        duration: 34,
+        start: 0,
+        interval: 1
+      },
+      playback: {
+        'rate': 1,
+        'range': 0.2,
+        'interval': 1
+      },
+      note: {
+        smudge: .5,
+        interval: 1
+      },
+      duration: {
+        smudge: .5,
+        interval: 1
+      },      
+    },
     "index": 0,
-    "systemDuration": 34.87599992752075,
-    "performanceDuration": 34.87599992752075,
-    timing: {
-      start: 0,
-      interval: 5
-    },
-    'playback': {
-      'rate': 1,
-      'range': 0.2,
-      'interval': 5
-    },
-    note: {
-      smudge: 0,
-      interval: 0
-    },
-    duration: {
-      smudge: 0,
-      interval: 0
-    },
     "echoCount": 10,
-    "loopCount": 0
   },
   {
     "seeds": [
@@ -234,7 +241,7 @@ export default {
         "duration": 1.2930002212524414
       }
     ],
-    "systemEvents": [
+    "nextEventsBase": [
       {
         "note": "B3",
         "frequency": 246.94165062806206,
@@ -271,28 +278,35 @@ export default {
         "duration": 1.2930002212524414
       }
     ],
-    timing: {
-      start: 0,
-      interval: 5
+    active: {
+      loops: 0,
+      playbackRate: 1,
+      noteSmudge: 0,
+      durationSmudge: 0,
+      duration: 22
     },
-    'playback': {
-      'rate': 1,
-      'range': 0.2,
-      'interval': 5
-    },
-    note: {
-      smudge: 0,
-      interval: 0
-    },
-    duration: {
-      smudge: 0,
-      interval: 0
+    params: {
+      timing: {
+        duration: 22,
+        start: 0,
+        interval: 1
+      },
+      playback: {
+        'rate': 1,
+        'range': 0.2,
+        'interval': 1
+      },
+      note: {
+        smudge: 0.5,
+        interval: 1
+      },
+      duration: {
+        smudge: 0.5,
+        interval: 1
+      }, 
     },
     "index": 1,
-    "systemDuration": 22.07800006866455,
-    "performanceDuration": 22.07800006866455,
     "echoCount": 10,
-    "loopCount": 0
   }
 			]
 			,

@@ -106,7 +106,7 @@
 					newSystem.seeds.push(event)
 				})
 
-				newSystem.systemEvents = this.rawPart.seeds
+				newSystem.systemEvents = []
 				newSystem.index = index
 				newSystem.systemDuration = this.rawPart.end - this.rawPart.start
         newSystem.performanceDuration = newSystem.systemDuration
