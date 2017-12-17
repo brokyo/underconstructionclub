@@ -131,8 +131,8 @@ export default {
 
       this.drawEcho = function(sketch) {
         system.seeds.forEach((seed) => {
-          for (var i = 1; i < system.echoCount; i++) {
-            sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.echoCount)) + ')')
+          for (var i = 1; i < system.params.patch.echoCount; i++) {
+            sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.params.patch.echoCount)) + ')')
             sketch.rect((seed.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + (system.params.timing.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + ((5 * i) * ((system.active.duration * canvasPixPerSecond) / system.active.duration)), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration), pixPerNote)
           }
         })

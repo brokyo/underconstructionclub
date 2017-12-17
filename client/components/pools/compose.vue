@@ -96,7 +96,40 @@
 				this.rawPart.end = Date.now() / 1000
 
 				let newSystem = {
+          index: index,
 					seeds: [],
+          baseEvents: [],
+          active: {
+            loops: 0,
+            playbackRate: 1,
+            noteSmudge: 0,
+            durationSmudge: 0,
+            duration: this.rawPart.end - this.rawPart.start,
+          },
+          params: {
+            timing: {
+              duration: this.rawPart.end - this.rawPart.start,
+              start: 0,
+              interval: 5
+            },
+            playback: {
+              rate: 1,
+              range: 0,
+              interval: 0
+            },
+            note: {
+              smudge: 0,
+              interval: 0
+            },
+            duration: {
+              smudge: 0,
+              interval: 0
+            },
+            patch: {
+              echoCount: 10
+            }
+          }
+
 				}
 
 				this.rawPart.seeds.forEach((event) => {
@@ -106,29 +139,6 @@
 					newSystem.seeds.push(event)
 				})
 
-				newSystem.systemEvents = []
-				newSystem.index = index
-				newSystem.systemDuration = this.rawPart.end - this.rawPart.start
-        newSystem.performanceDuration = newSystem.systemDuration
-        newSystem.timing = {
-          start: 0,
-          interval: 5
-        }
-        newSystem.playback = {
-          rate: 1,
-          range: 0,
-          loops: 0
-        },
-        newSystem.note = {
-          smudge: 0,
-          interval: 0
-        },
-        newSystem.duration = {
-          smudge: 0,
-          interval: 0
-        }
-				newSystem.echoCount = 10
-        newSystem.loopCount = 0
 
 				let constructedSystem = 'system' + index
 				this[constructedSystem] = newSystem

@@ -115,7 +115,7 @@ export default {
         "duration": 1.1590001583099365
       }
     ],
-    "nextEventsBase": [
+    "baseEvents": [
       {
         "note": "C5",
         "frequency": 523.2511306011972,
@@ -198,7 +198,7 @@ export default {
       duration: {
         smudge: .5,
         interval: 1
-      },      
+      },
     },
     "index": 0,
     "echoCount": 10,
@@ -241,7 +241,7 @@ export default {
         "duration": 1.2930002212524414
       }
     ],
-    "nextEventsBase": [
+    "baseEvents": [
       {
         "note": "B3",
         "frequency": 246.94165062806206,
@@ -303,7 +303,7 @@ export default {
       duration: {
         smudge: 0.5,
         interval: 1
-      }, 
+      },
     },
     "index": 1,
     "echoCount": 10,
