@@ -29,11 +29,11 @@
         this.systems.forEach((system) => {
           system.systemEvents = _.cloneDeep(system.seeds)
 
-          this.loopSystem(system)
+          setTimeout(() => this.loopSystem(system), system.timing.start * 1000)
         })
       },
       loopSystem(system) {
-        console.log('new loop - system: ', system.index)
+        // console.log('new loop - system: ', system.index)
         // Temporary (wind blowing leaves) - reset to seeds every loop
         system.systemEvents = _.cloneDeep(system.seeds)
 
@@ -45,7 +45,7 @@
         // Tracks additional start delay time based on duration smudge
         let compoundSmudge, changedDuration, smudgePercent
         compoundSmudge = 0
-        smudgePercent = _.random(-system.durationSmudge, system.durationSmudge)
+        smudgePercent = _.random(-system.duration.smudge, system.duration.smudge)
 
         system.systemEvents.forEach((event, index) => {
           // Calculate compounding smudge
@@ -53,7 +53,7 @@
           smudgeAmount = event.duration * smudgePercent
           compoundSmudge += smudgeAmount
 
-          event.frequency += _.random(system.noteSmudge)
+          event.frequency += _.random(system.note.smudge)
           event.duration += smudgeAmount
           event.start += compoundSmudge
 
@@ -66,21 +66,21 @@
         this.changeDuration(system)
 
         // Call self
-        let loopInterval = (system.systemDuration + system.interval) / system.playbackRate * 1000
+        let loopInterval = (system.performanceDuration + system.timing.interval) / system.playback.rate * 1000
         setTimeout(this.loopSystem, loopInterval, system)
         // system.loops++
       },
       scheduleEvent (event, lineIndex) {
         Tone.Transport.schedule((time) => {
-          console.log('frequency:', event.frequency, 'duration:', event.duration, 'playAt:', time + event.start)
+          // console.log('frequency:', event.frequency, 'duration:', event.duration, 'playAt:', time + event.start)
           let line = 'line' + lineIndex
           this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start, 0.75)
         })
       },
       applyPlaybackRate (system, event) {
-        event.frequency *= system.playbackRate
-        event.duration /= system.playbackRate
-        event.start /= system.playbackRate
+        event.frequency *= system.playback.rate
+        event.duration /= system.playback.rate
+        event.start /= system.playback.rate
 
         return event
       },
@@ -93,11 +93,19 @@
 
 
         finalEchoLength = finalSeed.duration * system.echoCount
-        endGap = system.systemDuration - (finalEchoLength + finalSeed.start)
+        endGap = system.performanceDuration - (finalEchoLength + finalSeed.start)
         // Should do something to catch if it's negative
         eventDuration = (finalSeed.start + finalEchoLength) - firstSeed.start
 
-        system.systemDuration = (startGap + eventDuration + endGap) / system.playbackRate
+        // LOL HAX
+        endGap = _.random(2, 8)
+        system.systemDuration = (startGap + eventDuration + endGap) / system.playback.rate
+
+        console.log('system:', system.index)
+        console.log('start gap:', startGap)
+        console.log('event duration:', eventDuration)
+        console.log('endGap:', endGap)
+        console.log('duration:', system.performanceDuration / system.playback.rate)
       }
     },
     mounted() {

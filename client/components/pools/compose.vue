@@ -20,7 +20,7 @@
 <script>
 	var Tone = require('tone')
 	var _ = require('lodash')
-	
+
 	export default {
 		name: 'compose',
 		data() {
@@ -94,32 +94,45 @@
 			endRecording(index) {
 				this.recording = false
 				this.rawPart.end = Date.now() / 1000
-	
+
 				let newSystem = {
 					seeds: [],
 				}
-	
+
 				this.rawPart.seeds.forEach((event) => {
 					event.start = event.start - this.rawPart.start
-	
+
 					delete event.active
 					newSystem.seeds.push(event)
 				})
 
-				newSystem.systemEvents = []	
+				newSystem.systemEvents = this.rawPart.seeds
 				newSystem.index = index
 				newSystem.systemDuration = this.rawPart.end - this.rawPart.start
-				newSystem.interval = 5
-				newSystem.start = 0
-				newSystem.playbackRate = 1
-				newSystem.playbackRange = 0
-				newSystem.noteSmudge = 0
-				newSystem.durationSmudge = 0
-				newSystem.echoCount = 10	
-	
+        newSystem.performanceDuration = newSystem.systemDuration
+        newSystem.timing = {
+          start: 0,
+          interval: 5
+        }
+        newSystem.playback = {
+          rate: 1,
+          range: 0,
+          loops: 0
+        },
+        newSystem.note = {
+          smudge: 0,
+          interval: 0
+        },
+        newSystem.duration = {
+          smudge: 0,
+          interval: 0
+        }
+				newSystem.echoCount = 10
+        newSystem.loopCount = 0
+
 				let constructedSystem = 'system' + index
 				this[constructedSystem] = newSystem
-	
+
 				this.rawPart = {
 					start: 0,
 					end: 0,
@@ -142,7 +155,7 @@
 						active: true
 					}
 					this.rawPart.seeds.push(event)				}
-	
+
 				this.$parent.line0.synth.triggerAttack(note, undefined, 0.75)
 			},
 			release(note) {
@@ -154,7 +167,7 @@
 					event.duration = Date.now() / 1000 - event.start
 					event.active = false
 				}
-	
+
 				this.$parent.line0.synth.triggerRelease(note)
 			}
 		},
@@ -166,7 +179,7 @@
 						trigger.active = true
 					}
 				})
-	
+
 				window.addEventListener('keyup', (e) => {
 					if (e.key === trigger.keyCode & !e.repeat) {
 						this.release(trigger.note)
@@ -185,7 +198,7 @@
 		flex-direction: row;
 		flex-wrap: wrap
 	}
-	
+
 	.synthTrigger {
 		border: 1px solid black;
 		flex-basis: 20%;
@@ -199,11 +212,11 @@
 		-ms-user-select: none;
 		user-select: none;
 	}
-	
+
 	.active {
 		background-color: red
 	}
-	
+
 	#controls {
 		display: flex;
 		height: 10vh;

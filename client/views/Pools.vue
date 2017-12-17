@@ -115,16 +115,86 @@ export default {
         "duration": 1.1590001583099365
       }
     ],
-    "systemEvents": [],
+    "systemEvents": [
+      {
+        "note": "C5",
+        "frequency": 523.2511306011972,
+        "midi": 72,
+        "start": 0.5089998245239258,
+        "duration": 1.1349999904632568
+      },
+      {
+        "note": "D5",
+        "frequency": 587.3295358348151,
+        "midi": 74,
+        "start": 1.5879998207092285,
+        "duration": 1.248000144958496
+      },
+      {
+        "note": "G5",
+        "frequency": 783.9908719634985,
+        "midi": 79,
+        "start": 2.81499981880188,
+        "duration": 0.9890000820159912
+      },
+      {
+        "note": "E5",
+        "frequency": 659.2551138257398,
+        "midi": 76,
+        "start": 3.7819998264312744,
+        "duration": 0.9560000896453857
+      },
+      {
+        "note": "G4",
+        "frequency": 391.99543598174927,
+        "midi": 67,
+        "start": 20.150999784469604,
+        "duration": 1.4280002117156982
+      },
+      {
+        "note": "D4",
+        "frequency": 293.6647679174076,
+        "midi": 62,
+        "start": 21.590999841690063,
+        "duration": 1.687000036239624
+      },
+      {
+        "note": "E4",
+        "frequency": 329.6275569128699,
+        "midi": 64,
+        "start": 24.38099980354309,
+        "duration": 1.5970001220703125
+      },
+      {
+        "note": "G3",
+        "frequency": 195.99771799087463,
+        "midi": 55,
+        "start": 25.988999843597412,
+        "duration": 1.1590001583099365
+      }
+    ],
     "index": 0,
     "systemDuration": 34.87599992752075,
-    "interval": 5,
-    "start": 0,
-    "playbackRate": 0.9,
-    "playbackRange": 0,
-    "noteSmudge": 0.05,
-    "durationSmudge": 0.05,
-    "echoCount": 10
+    "performanceDuration": 34.87599992752075,
+    timing: {
+      start: 0,
+      interval: 5
+    },
+    'playback': {
+      'rate': 1,
+      'range': 0.2,
+      'interval': 5
+    },
+    note: {
+      smudge: 0,
+      interval: 0
+    },
+    duration: {
+      smudge: 0,
+      interval: 0
+    },
+    "echoCount": 10,
+    "loopCount": 0
   },
   {
     "seeds": [
@@ -164,16 +234,65 @@ export default {
         "duration": 1.2930002212524414
       }
     ],
-    "systemEvents": [],
+    "systemEvents": [
+      {
+        "note": "B3",
+        "frequency": 246.94165062806206,
+        "midi": 59,
+        "start": 1.0269999504089355,
+        "duration": 1.6410000324249268
+      },
+      {
+        "note": "D4",
+        "frequency": 293.6647679174076,
+        "midi": 62,
+        "start": 12.02999997138977,
+        "duration": 0.877000093460083
+      },
+      {
+        "note": "G4",
+        "frequency": 391.99543598174927,
+        "midi": 67,
+        "start": 12.930000066757202,
+        "duration": 1.0449998378753662
+      },
+      {
+        "note": "E4",
+        "frequency": 329.6275569128699,
+        "midi": 64,
+        "start": 13.986999988555908,
+        "duration": 0.9219999313354492
+      },
+      {
+        "note": "G4",
+        "frequency": 391.99543598174927,
+        "midi": 67,
+        "start": 14.90999984741211,
+        "duration": 1.2930002212524414
+      }
+    ],
+    timing: {
+      start: 0,
+      interval: 5
+    },
+    'playback': {
+      'rate': 1,
+      'range': 0.2,
+      'interval': 5
+    },
+    note: {
+      smudge: 0,
+      interval: 0
+    },
+    duration: {
+      smudge: 0,
+      interval: 0
+    },
     "index": 1,
     "systemDuration": 22.07800006866455,
-    "interval": 5,
-    "start": 3,
-    "playbackRate": 0.6,
-    "playbackRange": 0,
-    "noteSmudge": 0,
-    "durationSmudge": 0.15,
-    "echoCount": 10
+    "performanceDuration": 22.07800006866455,
+    "echoCount": 10,
+    "loopCount": 0
   }
 			]
 			,

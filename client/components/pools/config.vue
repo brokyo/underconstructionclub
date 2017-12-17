@@ -1,27 +1,67 @@
 <template>
 	<main>
       <div v-for="(system, index) in systems">
-        <h3>system {{index}} - {{system.systemDuration}} Seconds</h3>
-        <input v-model.number="system.start"></input>
-        <label>Start (seconds)</label>
-        <br>
-        <input v-model.number="system.interval"></input>
-        <label>Interval (seconds)</label>
-        <br>
-        <input v-model.number="system.playbackRate"></input>
-        <label>Playback Rate (1 is normal speed, .5 half, etc)</label>
-        <br>
-<!--         <label>Playback Rate range (decimal as percentage [0 is no change, 0.5 50% more or less, etc) </label>
-        <input v-model.number="system.playbackRange"></input> -->
-        <input v-model.number="system.noteSmudge"></input>
-        <label>Note Smudge (decimal as percentage. [.1 is 10% higher or lower (randomly selected) etc])</label>
-        <br>
-        <input v-model.number="system.durationSmudge"></input>
-        <label>Duration Smudge (decimal as percentage. [.5 is 50% faster or slower etc])</label>
+        <h3>system {{index}} - {{(system.performanceDuration).toFixed()}} Seconds</h3>
+        <div class="params">
+          <div class="category">
+            <h4>Timing</h4>
+            <p>In Seconds. Set start time and gap in between system looping.</p>
+            <div class="input">
+              <label>Start [seconds]</label>
+              <input type="number" v-model.number="system.timing.start"></input>
+            </div>
+            <div class="input">
+              <label>Interval [seconds]</label>
+              <input type="number" v-model.number="system.timing.interval"></input>
+            </div>
+          </div>
+
+          <div class="category">
+            <h4>Playback</h4>
+            <p>System loop speed and max variance. New values calculate after number of loops in 'loop change'</p>
+            <div class="input">
+              <label>Base Playback Rate [decimal]</label>
+              <input type="number" v-model.number="system.playback.rate" @change="changeDuration(system)"></input>
+            </div>
+            <div class="input">
+              <label>Playback Rate range [decimal %]</label>
+              <input type="number" v-model.number="system.playback.range"></input>
+            </div>
+            <div class="input">
+              <label>New Values After [loops]</label>
+              <input type="number" v-model.number="system.playback.interval"></input>
+            </div>
+          </div>
+
+          <div class="category">
+            <h4>Note</h4>
+            <p>Note percentage variance. New values calculate after number of loops in 'loop change'</p>
+            <div class="input">
+              <label>Note Smudge Max [decimal %]</label>
+              <input type="number" v-model.number="system.note.smudge"></input>
+            </div>
+            <div class="input">
+              <label>New Values After [loops]</label>
+              <input type="number" v-model.number="system.note.interval"></input>
+            </div>
+          </div>
+
+          <div class="category">
+            <h4>Duration</h4>
+            <p>Note duration variance. New values calculate after number of loops in 'loop change'</p>
+            <div class="input">
+              <label>Duration Smudge [decimal %]</label>
+              <input type="number" v-model.number="system.duration.smudge"></input>
+            </div>
+            <div class="input">
+              <label>New Values After [loops]</label>
+              <input type="number" v-model.number="system.duration.interval"></input>
+            </div>
+          </div>
+        </div>
       </div>
       <div id="canvas">
       </div>
-      <pre>{{systems}}</pre>
 	</main>
 </template>
 
@@ -52,13 +92,12 @@ export default {
   		let min = _.min(systemMidiMin) - 3
   		return {range: max - min , max: max}
   	},
-    getSystemDuration() {
-      let systemDuration = 0
-      this.systems.forEach((system) => {
-        systemDuration += system.systemDuration
+    changeDuration(system) {
+      system.performanceDuration = system.systemDuration / system.playback.rate
+      system.systemEvents.forEach((event, index) => {
+        event.start = system.seeds[index].start / system.playback.rate
+        event.duration = system.seeds[index].duration  / system.playback.rate
       })
-
-      return systemDuration
     }
   },
   mounted () {
@@ -70,7 +109,7 @@ export default {
   	var canvasWidth = 1200
   	var canvasHeight = 200
 
-    var systemDuration = this.getSystemDuration()
+    var systemDuration = this.systems[0].performanceDuration + this.systems[1].performanceDuration
   	var canvasPixPerSecond = canvasWidth / systemDuration
     var canvasPixPerSystemHeight = canvasHeight / this.systems.length
 
@@ -84,26 +123,30 @@ export default {
       // this.width = system.length * canvasPixPerSecond
       this.height = canvasPixPerSystemHeight
 
-      this.systemWidth = system.systemDuration * canvasPixPerSecond
-      this.seedPixPerSecond = this.systemWidth / system.systemDuration
+      this.systemWidth = system.performanceDuration * canvasPixPerSecond
+      this.seedPixPerSecond = this.systemWidth / system.performanceDuration
 
       this.display = function(sketch) {
-        sketch.rect(system.start * canvasPixPerSecond, this.y, system.systemDuration * canvasPixPerSecond, this.height)
+        sketch.rect(system.timing.start * canvasPixPerSecond, this.y, system.performanceDuration * canvasPixPerSecond, this.height)
       }
 
       this.drawSeeds = function(sketch) {
-        system.seeds.forEach((seed) => {
-          sketch.rect((seed.start * this.seedPixPerSecond) + (system.start * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
+        system.systemEvents.forEach((seed) => {
+          sketch.rect((seed.start * this.seedPixPerSecond) + (system.timing.start * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
         })
       }
 
       this.drawEcho = function(sketch) {
-        system.seeds.forEach((seed) => {
+        system.systemEvents.forEach((seed) => {
           for (var i = 1; i < system.echoCount; i++) {
             sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.echoCount)) + ')')
             sketch.rect((seed.start * this.seedPixPerSecond) + (system.start * this.seedPixPerSecond) + ((5 * i) * this.seedPixPerSecond), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration * this.seedPixPerSecond, pixPerNote)
           }
         })
+      }
+
+      this.drawInterval = function (sketch) {
+        sketch.rect(system.performanceDuration * canvasPixPerSecond, this.y, system.timing.interval * canvasPixPerSecond, this.height)
       }
     }
 
@@ -126,10 +169,9 @@ export default {
           system.display(sketch)
           sketch.fill(25)
           system.drawSeeds(sketch)
-          // for(var i; i < 5; i++){
-          system.drawEcho(sketch)
-            // i++
-          // }
+          // system.drawEcho(sketch)
+          sketch.fill(190)
+          system.drawInterval(sketch)
         })
       }
   	})
@@ -137,6 +179,31 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
+  .params {
+    display: flex;
+    width: 1000px;
+  }
 
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+  }
+  .category {
+    flex-grow: 1;
+
+    h4 {
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 10px;
+      width: 120px;
+    }
+  }
+
+  .input {
+
+  }
 </style>
