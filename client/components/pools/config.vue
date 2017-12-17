@@ -125,7 +125,12 @@ export default {
 
       this.drawSeeds = function(sketch) {
         system.seeds.forEach((seed) => {
-          sketch.rect((seed.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + (system.params.timing.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration), pixPerNote)
+          sketch.rect(
+            ((seed.start / system.params.playback.rate) + system.params.timing.start) * canvasPixPerSecond,
+            ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight),
+            (seed.duration / system.params.playback.rate) * canvasPixPerSecond,
+            pixPerNote
+          )
         })
       }
 
@@ -138,9 +143,6 @@ export default {
         })
       }
 
-      this.drawInterval = function (sketch) {
-        sketch.rect(system.performanceDuration * canvasPixPerSecond, this.y, system.params.timing.interval * canvasPixPerSecond, this.height)
-      }
     }
 
     this.systems.forEach((system) => {
@@ -162,9 +164,7 @@ export default {
           system.display(sketch)
           sketch.fill(25)
           system.drawSeeds(sketch)
-          // system.drawEcho(sketch)
-          sketch.fill(190)
-          system.drawInterval(sketch)
+          system.drawEcho(sketch)
         })
       }
   	})
