@@ -11,6 +11,7 @@ import Home from '../views/Home'
 import Signup from '../views/SignUp'
 import Windows from '../views/Windows'
 import Pools from '../views/Pools'
+import Pools2 from '../views/Pools2'
 
 export default new Router({
   mode: 'history',
@@ -30,6 +31,10 @@ export default new Router({
     {
       path: '/pools',
       component: Pools
+    },
+    {
+      path: '/pools/2',
+      component: Pools2
     }
   ]
 })

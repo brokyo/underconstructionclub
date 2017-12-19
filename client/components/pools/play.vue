@@ -20,8 +20,8 @@
     },
     computed: {
       embed() {
-        // return 'http://207.251.86.238/cctv391.jpg?cache=' + this.cacheBreak
-        return 'http://206.140.121.226/jpg/image.jpg?cache=' + this.cacheBreak
+        return 'http://207.251.86.238/cctv391.jpg?cache=' + this.cacheBreak
+        // return 'http://206.140.121.226/jpg/image.jpg?cache=' + this.cacheBreak
       }
     },
     methods: {
@@ -82,7 +82,7 @@
         system.active.loops++
       },
       changePlaybackRate (system) {
-        system.active.playbackRate = system.params.playback.base * (1* _.round(_.random(-system.params.playback.range, system.params.playback.range), 2))
+        system.active.playbackRate = system.params.playback.base * (1 + _.round(_.random(-system.params.playback.range, system.params.playback.range), 2))
         system.active.duration = system.params.timing.duration / system.active.playbackRate
       },
       changeFrequencyPercent (system) {

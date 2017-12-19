@@ -104,7 +104,8 @@ export default {
   		return {range: max - min , max: max}
   	},
     changeDuration(system) {
-      system.active.duration = system.params.timing.duration / system.params.playback.base
+      system.active.playbackRate = system.params.playback.base
+      system.active.duration /= system.active.playbackRate
     }
   },
   mounted () {
