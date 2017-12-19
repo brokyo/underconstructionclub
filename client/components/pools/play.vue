@@ -20,7 +20,8 @@
     },
     computed: {
       embed() {
-        return 'http://207.251.86.238/cctv391.jpg?cache=' + this.cacheBreak
+        // return 'http://207.251.86.238/cctv391.jpg?cache=' + this.cacheBreak
+        return 'http://206.140.121.226/jpg/image.jpg?cache=' + this.cacheBreak
       }
     },
     methods: {
@@ -31,6 +32,7 @@
         })
       },
       loopSystem(system) {
+        console.log('system', system.index, 'loop')
         // Temporary (wind blowing leaves) - reset to seeds every loop
         system.nextEventsBase = _.cloneDeep(system.seeds)
 
@@ -41,16 +43,19 @@
         // Change Playback
         if (system.active.loops % system.params.playback.interval === 0) {
           this.changePlaybackRate(system)
+          console.log('system', system.index, 'change: playback', system.active.playbackRate )
         }
 
         // Change Frequency
         if (system.active.loops % system.params.note.interval === 0) {
           this.changeFrequencyPercent(system)
+          console.log('system', system.index, 'change: frequency', system.active.noteSmudge )
         }
 
         // Change Duration
         if (system.active.loops % system.params.duration.interval === 0) {
           this.changeDurationPercent(system)
+          console.log('system', system.index, 'change: duration', system.active.durationSmudge )
         }
 
         // Tracks additional start delay time based on duration smudge
@@ -60,12 +65,12 @@
         // Select new notes
         system.nextEventsBase.forEach((event, index) => {
           let smudgeAmount, newDuration
-          smudgeAmount = event.duration *= system.active.durationSmudge
+          smudgeAmount = event.duration * (1 - system.active.durationSmudge)
           compoundSmudge += smudgeAmount
 
-          event.frequency *= system.active.noteSmudge *= system.active.playbackRate
-          event.duration *= smudgeAmount /= system.active.playbackRate
-          event.start += compoundSmudge /= system.active.playbackRate
+          event.frequency *= (system.active.playbackRate * system.active.playbackRate)
+          event.duration += (smudgeAmount / system.active.playbackRate)
+          event.start += (compoundSmudge / system.active.playbackRate)
 
           this.scheduleEvent(event, system.index)
 
@@ -77,19 +82,21 @@
         system.active.loops++
       },
       changePlaybackRate (system) {
-        system.active.playbackRate = system.params.playback.rate * (1 + _.round(_.random(-system.params.playback.range, system.params.playback.range), 2))
+        system.active.playbackRate = system.params.playback.base * (1* _.round(_.random(-system.params.playback.range, system.params.playback.range), 2))
         system.active.duration = system.params.timing.duration / system.active.playbackRate
       },
       changeFrequencyPercent (system) {
-        system.active.noteSmudge = 1 + _.round(_.random(-system.params.note.smudge, system.params.note.smudge), 2)
+        system.active.noteSmudge = system.params.note.base * (1 + _.round(_.random(-system.params.note.smudge, system.params.note.smudge), 2))
       },
       changeDurationPercent (system) {
-        system.active.durationSmudge = 1 + _.round(_.random(-system.params.duration.smudge, system.params.duration.smudge))
+        system.active.durationSmudge = system.params.duration.base * (1 + _.round(_.random(-system.params.duration.smudge, system.params.duration.smudge)))
       },
       scheduleEvent (event, lineIndex) {
         Tone.Transport.schedule((time) => {
           let line = 'line' + lineIndex
           this.$parent[line].synth.triggerAttackRelease(event.frequency, event.duration, time + event.start, 0.75)
+          // console.log('frequency:', event.frequency, 'duration:', event.duration, 'start:', event.start+time)
+
         })
       }
     },

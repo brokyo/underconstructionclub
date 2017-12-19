@@ -20,8 +20,8 @@
             <h4>Playback</h4>
             <p>Set system playback speed. 1 is normal, 2 is double, 0.5 is half-speed, etc</p>
             <div class="input">
-              <label>Base Playback Rate [decimal]</label>
-              <input type="number" v-model.number="system.params.playback.rate" @change="changeDuration(system)"></input>
+              <label>Playback Rate Base [decimal]</label>
+              <input type="number" v-model.number="system.params.playback.base" @change="changeDuration(system)"></input>
             </div>
             <div class="input">
               <label>Playback Rate range [decimal %]</label>
@@ -37,8 +37,12 @@
             <h4>Note</h4>
             <p>Max percentange (as decimal) note pitch will uniformly change.</p>
             <div class="input">
-              <label>Note Smudge Max [decimal %]</label>
-              <input type="number" v-model.number="system.params.note.smudge"></input>
+              <label>Note Smudge Base [decimal]</label>
+              <input type="number" v-model.number="system.params.note.base"></input>
+            </div>
+            <div class="input">
+              <label>Smudge Range [decimal]</label>
+              <input type="number" v-model.number="system.params.note.range"></input>
             </div>
             <div class="input">
               <label>New Values After [loops]</label>
@@ -50,8 +54,12 @@
             <h4>Duration</h4>
             <p>Max percentage (as decimal) note duration will uniformly change.</p>
             <div class="input">
-              <label>Duration Smudge [decimal %]</label>
-              <input type="number" v-model.number="system.params.duration.smudge"></input>
+              <label>Duration Smudge Base [decimal]</label>
+              <input type="number" v-model.number="system.params.duration.base"></input>
+            </div>
+            <div class="input">
+              <label>Duration Smudge Range [decimal]</label>
+              <input type="number" v-model.number="system.params.duration.range"></input>
             </div>
             <div class="input">
               <label>New Values After [loops]</label>
@@ -62,9 +70,9 @@
       </div>
       <div id="canvas">
       </div>
-      <p v-for="system in systems">
+      <pre v-for="system in systems">
         {{system}}
-      </p>
+      </pre>
 	</main>
 </template>
 
@@ -96,7 +104,7 @@ export default {
   		return {range: max - min , max: max}
   	},
     changeDuration(system) {
-      system.active.duration = system.params.timing.duration / system.params.playback.rate
+      system.active.duration = system.params.timing.duration / system.params.playback.base
     }
   },
   mounted () {
@@ -129,9 +137,9 @@ export default {
       this.drawSeeds = function(sketch) {
         system.seeds.forEach((seed) => {
           sketch.rect(
-            ((seed.start / system.params.playback.rate) + system.params.timing.start) * canvasPixPerSecond,
+            ((seed.start / system.params.playback.base) + system.params.timing.start) * canvasPixPerSecond,
             ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight),
-            (seed.duration / system.params.playback.rate) * canvasPixPerSecond,
+            (seed.duration / system.params.playback.base) * canvasPixPerSecond,
             pixPerNote
           )
         })
@@ -141,7 +149,7 @@ export default {
         system.seeds.forEach((seed) => {
           for (var i = 1; i < system.params.patch.echo; i++) {
             sketch.fill('rgba(65, 65, 65,' + (1 - (i/system.params.patch.echo)) + ')')
-            sketch.rect((seed.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + (system.params.timing.start / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + ((5 * i) * ((system.active.duration * canvasPixPerSecond) / system.active.duration)), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration / system.params.playback.rate * ((system.active.duration * canvasPixPerSecond) / system.active.duration), pixPerNote)
+            sketch.rect((seed.start / system.params.playback.base * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + (system.params.timing.start / system.params.playback.base * ((system.active.duration * canvasPixPerSecond) / system.active.duration)) + ((5 * i) * ((system.active.duration * canvasPixPerSecond) / system.active.duration)), ((midiLength.max - seed.midi) * pixPerNote) + (system.index * canvasPixPerSystemHeight), seed.duration / system.params.playback.base * ((system.active.duration * canvasPixPerSecond) / system.active.duration), pixPerNote)
           }
         })
       }

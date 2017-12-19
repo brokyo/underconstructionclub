@@ -103,8 +103,8 @@
           active: {
             loops: 0,
             playbackRate: 1,
-            noteSmudge: 0,
-            durationSmudge: 0,
+            noteSmudge: 1,
+            durationSmudge: 1,
             duration: this.rawPart.end - this.rawPart.start,
           },
           params: {
@@ -114,20 +114,22 @@
               interval: 5
             },
             playback: {
-              rate: 1,
+              base: 1,
               range: 0,
               interval: 0
             },
             note: {
-              smudge: 0,
+              base: 1,
+              range: 0,
               interval: 0
             },
             duration: {
-              smudge: 0,
+              base: 1,
+              range: 0,
               interval: 0
             },
             patch: {
-              echoCount: 10
+              echo: 10
             }
           }
         }
