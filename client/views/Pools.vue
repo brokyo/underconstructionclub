@@ -43,6 +43,7 @@ var StartAudioContext = require('startaudiocontext')
 import compose from '../components/pools/compose.vue'
 import config from '../components/pools/config.vue'
 import play from '../components/pools/play.vue'
+import Pool from '../../static/js/pools.js'
 // import tune from '../components/pools/tune.vue'
 
 export default {
@@ -54,6 +55,23 @@ export default {
       started: false,
       state: 'compose',
       showTooltip: true,
+      patchConfig: {
+        synthType: 'AMSynth',
+        synthConfig: {
+          envelope: {
+            attack: 1,
+            sustain: 1,
+            release: 3
+          }
+        },
+        filterConfig: {},
+        tremologConfig: {},
+        feedbackDelayConfig: {},
+        delayConfig: {},
+        gainConfig: {},
+        outConfig: {}
+      },
+      line0: {},
       // showTune: true,
       systems: [
           {
@@ -740,8 +758,8 @@ export default {
               }
             ]
           },
-                
-                  {
+
+          {
             "index": 1,
             "seeds": [
               {
@@ -893,18 +911,18 @@ export default {
               }
             ]
           }
-      
+
       ]
       ,
-      line0: {
-        synth: {},
-        panner: {},
-        filter: {},
-        tremolo: {},
-        echo: {},
-        delay: {},
-        loop: {},
-      },
+      // line0: {
+      //   synth: {},
+      //   panner: {},
+      //   filter: {},
+      //   tremolo: {},
+      //   echo: {},
+      //   delay: {},
+      //   loop: {},
+      // },
       line1: {
         synth: {},
         panner: {},
@@ -979,13 +997,13 @@ export default {
           type: 'square'
         },
         envelope: {
-            attack: 0.25, 
-            sustain: 0.75, 
+            attack: 0.25,
+            sustain: 0.75,
             release: 3
-          }, 
+          },
         modulationEnvelope: {
-            attack: 0.25, 
-            sustain: 0.75, 
+            attack: 0.25,
+            sustain: 0.75,
             release: 3
           }
       }
@@ -1003,7 +1021,6 @@ export default {
       this.line1.echo.fan(this.global.EQ3, this.line1.delay)
       this.line1.delay.fan(this.global.EQ3, this.line1.loop)
       this.line1.loop.connect(this.line1.delay)
-
     },
     saveSystem (exortedRecording) {
       this.systems[exortedRecording.index] = exortedRecording
@@ -1013,12 +1030,13 @@ export default {
     }
   },
   mounted () {
-    if(this.isMobile){
-      this.started = false
-    } else {
+    this.line0 = new Pool(this.patchConfig)
+    // if(this.isMobile){
+    //   this.started = false
+    // } else {
       this.started = true
       this.constructTone()
-    }
+    // }
   }
 }
 </script>
