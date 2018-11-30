@@ -1,6 +1,6 @@
 <template>
     <main>
-        <pre>Hiya. I'm Alex Carusillo & I make stuff with code. Always interested in new people and ideas so, seriously, alexcarusillo@gmail.com for professional 'technologist' work, collaborations, or just to chat!</pre>
+        <pre>Hiya. I'm Alex Carusillo & I make stuff with code. Always interested in new people and ideas so, seriously, <a href="mailto:alexcarusillo@gmail.com">alexcarusillo@gmail.com</a> for professional 'technologist' work, collaborations, or just to chat!</pre>
         <h2>Log</h2>
         <pre>11-30-18</pre>
         <p>Put up A/V stuff. I'm particularly excited about the electromagnetic field recording videos atm so if you think they're cool @ me. I want to do more with them but don't quite know what.</p>
@@ -108,7 +108,7 @@ export default {
             what: 'Probabilistic music and evolving visuals. This is alpha but I\'m using it for something and need a link. You can make your own using the Additive Synthesizer. Let me know if you want to collaborate on this as I\'d love help.',
             how: 'click the link. It\'s supposed to always be quiet as it\'ll end up being an always on device (maybe)',
             tech: 'Vue.js, Tone.js, p5.js',
-            url: 'underconstructionclub1.firebaseapp.com/olp2',
+            url: 'everythingacycle.under-construction.club',
             image: 'images/olp2.png'
         },
         {
