@@ -1,6 +1,9 @@
 <template>
     <main>
-        <pre>Hiya. I'm Alex Carusillo & I make stuff with code. Always interested in new people and ideas so, seriously, <a href="mailto:alexcarusillo@gmail.com">alexcarusillo@gmail.com</a> for professional 'technologist' work, collaborations, or just to chat!</pre>
+      <div class="introText">
+        <p>Hiya. I'm Alex Carusillo & I make stuff with code.</p> 
+        <p>Always interested in new people and ideas so, seriously, <a href="mailto:alexcarusillo@gmail.com">alexcarusillo@gmail.com</a> for professional 'technologist' work, collaborations, or just to chat! I'd love to hear about what you're working on.</p>
+      </div>
         <h2>Log</h2>
         <pre>11-30-18</pre>
         <p>Put up A/V stuff. I'm particularly excited about the electromagnetic field recording videos atm so if you think they're cool @ me. I want to do more with them but don't quite know what.</p>
@@ -82,14 +85,14 @@ export default {
       avProjects: [
         {
           name: 'Waves [for anna & dylan but I never finished :(]',
-          what: 'Generative light and sound IRL. A tunable system that syncs Philip Hue lightbulbs with timbre controls to play an adjustable, evolving piece. Click to see video or get the repo here.',
+          what: 'Generative light and sound IRL. A tunable system that syncs Philip Hue bulbs with timbre controls to play an adjustable, evolving piece. Click to see video or get the repo here.',
           tech: 'Vue.js, Tone.js, Philips Hue',
           url: 'www.youtube.com/watch?v=SAdAy6xxl8M',
           image: 'images/waves.png',
         },
         {
           name: 'Our Little Planet [video series]',
-          what: 'Series of videos combining electromagnetic field recordings and longform static video.',
+          what: 'Series of videos combining electromagnetic field recordings and long-form static video.',
           tech: 'LOM Audio Priezor, Zoom H4n Pro, iPhone 4',
           url: 'www.youtube.com/watch?v=xl7YxKPPbg8&index=9&list=PLhNGcsSWZ_gA0fVJbWJHEwOKMGPKIYsBl',
           image: 'images/olp-v.png',
@@ -175,6 +178,17 @@ export default {
 <style lang="scss" scoped="">
 main {
     margin: 8px
+}
+
+.introText {
+    width: 800px;
+    margin: 20px auto;
+    text-align: center;
+
+    p {
+      margin-bottom: 5px;
+      margin-top: 0px;
+    }
 }
 
 .emailSignupContainer {
