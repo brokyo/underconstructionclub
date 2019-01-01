@@ -88,22 +88,15 @@ export default {
           what: 'Generative light and sound IRL. A tunable system that syncs Philip Hue bulbs with timbre controls to play an adjustable, evolving piece. Click to see video or get the repo here.',
           tech: 'Vue.js, Tone.js, Philips Hue',
           url: 'www.youtube.com/watch?v=SAdAy6xxl8M',
-          image: 'images/waves.png',
+          image: 'images/waves.jpg',
         },
         {
           name: 'Our Little Planet [video series]',
           what: 'Series of videos combining electromagnetic field recordings and long-form static video.',
           tech: 'LOM Audio Priezor, Zoom H4n Pro, iPhone 4',
           url: 'www.youtube.com/watch?v=xl7YxKPPbg8&index=9&list=PLhNGcsSWZ_gA0fVJbWJHEwOKMGPKIYsBl',
-          image: 'images/olp-v.png',
-        },
-        {
-          name: 'Photos',
-          what: 'I take a lot of pictures with plastic cameras and expired/homemade film.',
-          tech: 'Superheadz Golden Half, Minolta AF2, Lomo LCA, Superheadz Ultra Wide & Slim',
-          url: 'www.flickr.com/photos/95717285@N00/albums/72157702680866031',
-          image: 'images/flickr.png',
-        },
+          image: 'images/olp-v.jpg',
+        }
       ],
       codeProjects: [
         {
@@ -143,7 +136,15 @@ export default {
           tech: 'Vue.js, Tone.js',
           url: 'pools.under-construction.club',
           image: 'images/fade.png',
-        }, {
+        }, 
+        {
+          name: 'Photos',
+          what: 'I take a lot of pictures with plastic cameras and expired/homemade film.',
+          tech: 'Superheadz Golden Half, Minolta AF2, Lomo LCA, Superheadz Ultra Wide & Slim',
+          url: 'www.flickr.com/photos/95717285@N00/albums/72157702680866031',
+          image: 'images/flickr.png',
+        },
+        {
           name: 'GeoCities Spelunker',
           what: 'Geocities explorer and hall of fame',
           how: 'Go to a random archived geocities page and - if it\'s cool - memorialize it so other people can see it.',
