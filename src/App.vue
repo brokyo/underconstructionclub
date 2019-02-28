@@ -100,6 +100,14 @@ export default {
       ],
       codeProjects: [
         {
+          name: 'Breath',
+          what: "Evolving harmonic drone and breathing exercise. Part of `Digital Prayers Work` app. Drone written in tone.js using white noise, filters, and a series of effects. Visuals are a perlin noise 3d probability space drawn in p5. ",
+          how: "After click start drone changes on its own or can be controlled manually. It's pretty hard to make it sound bad so explore the parameters.",
+          tech: "Vue.js, Tone.js, P5.js",
+          url: "breathe.under-construction.club",
+          image: 'images/breath.png'
+        },
+        {
             name: 'Everything A Cycle',
             what: 'Probabilistic music and evolving visuals. This is alpha but I\'m using it for something and need a link. You can make your own using the Additive Synthesizer. Let me know if you want to collaborate on this as I\'d love help.',
             how: 'click the link. It\'s supposed to always be quiet as it\'ll end up being an always on device (maybe)',
